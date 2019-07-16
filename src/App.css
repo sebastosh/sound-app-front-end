@@ -10,7 +10,7 @@ text-decoration-line: underline overline;
 
 .navuser {
 display: inline-block;
-float:inline-end;
+float: inline-end;
 }
 
 form {
@@ -49,3 +49,12 @@ color: white;
   border: 2px solid;
 }
 
+.module {
+  border: 1px solid;
+  display: inline-grid;
+  padding: 1em;
+}
+
+.knobs {
+  
+}
