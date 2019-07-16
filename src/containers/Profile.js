@@ -1,5 +1,5 @@
 import React from "react";
-import Session from "../components/Session";
+import { Link } from "react-router-dom";
 
 class Profile extends React.Component {
   state = {
@@ -43,12 +43,17 @@ class Profile extends React.Component {
 
   render() {
     let sessions = this.props.currentUser.attributes.sessions.map(session => {
-      return <Session key={session.id} session={session} />;
+      return (
+        <div className={`card`} key={session.id}>
+          <Link to={`/sessions/${session.id}`}>{session.name}</Link>
+        </div>
+      );;
     });
 
     return (
       <div>
-        <h1>{this.props.currentUser.attributes.username}'s Sessions</h1>
+        <h1>{this.props.currentUser.attributes.username}'s Profile</h1>
+        <h2>Current Sessions</h2>
         {sessions}
       </div>
     );

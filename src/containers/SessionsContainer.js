@@ -1,18 +1,22 @@
-import { Link } from 'react-router-dom';
-import Session from '../components/Session'
+import { Link } from "react-router-dom";
+import Session from "../components/Session";
 
-import React, { Component } from 'react'
+import React, { Component } from "react";
 
 export class SessionsContainer extends Component {
-  render() { 
-    console.log(this.props);
-    const userSessions = this.props.currentSessions
-    let sessions = userSessions.map(session => {
-      return <Session key={session.id} session={session} />;
+  render() {
+    const userSessions = this.props.currentSessions;
+    let renderSessions = userSessions.map(session => {
+      return (
+        <div className={`card`} key={session.id}>
+          <Link to={`/sessions/${session.id}`}>{session.name}</Link>
+        </div>
+      );
     });
+
     return (
       <div>
-        {sessions}
+        {renderSessions}
         {/* {this.state.currentUser.id === 2 ? <div>NO SESSIONS</div> : (
               <Route
                 path={`/sessions/:sessionsId`}
@@ -25,11 +29,9 @@ export class SessionsContainer extends Component {
                 )}
               />
             )} */}
-            
       </div>
     );
-  
   }
 }
 
-export default SessionsContainer
+export default SessionsContainer;

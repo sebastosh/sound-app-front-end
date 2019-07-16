@@ -7,6 +7,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
+import './App.css'
 
 export default class App extends React.Component {
   state = {
@@ -30,7 +31,6 @@ export default class App extends React.Component {
       })
         .then(res => res.json())
         .then(profileInfo => {
-          this.setState({ currentUser: profileInfo });
           this.getUser(profileInfo);
         });
     }
@@ -88,10 +88,17 @@ export default class App extends React.Component {
               <Profile {...routerProps} currentUser={this.state.currentUser} />
             )}
           />
+          
           <div>
-            {!this.state.currentSessions ? (
-              <div>NO SESSIONS</div>
-            ) : (
+            <Route exact path='/' render={routerProps => <SessionsContainer {...routerProps} currentSessions={this.state.currentSessions} />}  />
+            
+            {this.state.currentSessions === 0 ? null : <Route path={`/sessions/:sessionsId`} render={routerProps => <SessionShow {...routerProps} />} />}
+            
+          
+
+
+
+            {/* {!this.state.currentSessions ? null : (
               <Route
                 exact
                 path="/"
@@ -102,7 +109,7 @@ export default class App extends React.Component {
                   />
                 )}
               />
-            )}
+            )} */}
           </div>
         </Router>
       </React.Fragment>
