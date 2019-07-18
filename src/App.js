@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import SessionsContainer from "./containers/SessionsContainer";
-import SessionShow from "./components/SessionShow";
+import Session from "./components/Session";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -92,7 +92,7 @@ export default class App extends React.Component {
           <div>
             <Route exact path='/' render={routerProps => <SessionsContainer {...routerProps} currentSessions={this.state.currentSessions} />}  />
             
-            {this.state.currentSessions === 0 ? null : <Route path={`/sessions/:sessionsId`} render={routerProps => <SessionShow {...routerProps} />} />}
+            {this.state.currentSessions === 0 ? null : <Route path={`/sessions/:sessionsId`} render={routerProps => <Session {...routerProps} />} />}
             
           
 

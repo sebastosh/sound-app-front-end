@@ -1,5 +1,9 @@
+body {
+  font-size: 1.5em;
+}
+
 .navbar {
-  margin: 1em;
+  margin: 1em 0;
 }
 
 .navbar a {
@@ -41,6 +45,9 @@ background-color: cadetblue;
 color: white;
 }
 
+.session {
+  margin: 0 1em;
+}
 
 .card {
   display: inline-grid;
@@ -49,12 +56,8 @@ color: white;
   border: 2px solid;
 }
 
-.module {
-  border: 1px solid;
+.handlers {
+  float:left;
   display: inline-grid;
-  padding: 1em;
-}
-
-.knobs {
   
 }

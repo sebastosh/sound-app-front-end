@@ -1,48 +1,110 @@
 import React, { Component } from "react";
-import { Dial, Toggle, Sequencer } from "react-nexusui";
+import { Dial, Toggle, Slider, TextButton } from "react-nexusui";
 import Tone from "tone";
-
-// const transport = new Tone.Transport() 
+import KeyboardEventHandler from "react-keyboard-event-handler";
 
 const synthGain = new Tone.Gain(0.1).toMaster();
 
 const duoSynth = new Tone.DuoSynth().connect(synthGain);
 
 export class Synth extends Component {
-    state = {
-        frequency: 'C4',
-    }
-
-    componentDidMount() {
-        duoSynth.frequency.value = this.state.frequency
-    }
-
-  handleAttack = e => {
-    if (e) {
-      duoSynth.triggerAttack(this.state.frequency);
-    } else {
-      duoSynth.triggerRelease();
-    }
+  state = {
+    octave: 4,
+    frequency: "C4",
+    attack: 0.01,
+    release: 1
   };
 
   handleGain = e => {
-      synthGain.gain.value = e
-      
-}
+    synthGain.gain.value = e;
+  };
 
-  handleFreq = e => {
-      duoSynth.frequency.value = e
-      this.setState({frequency:duoSynth.frequency.value})}
-  ;
+  handleRelease = duration => {
+    this.setState({ release: duration });
+  };
+
+  octaveUp = () => {
+    if (this.state.octave < 8) this.setState({ octave: this.state.octave + 1 });
+    console.log("sdfsf");
+  };
+
+  octaveDown = () => {
+    if (this.state.octave > 0) this.setState({ octave: this.state.octave - 1 });
+    console.log("sdfsf");
+  };
+
+  handlePlayKeys = key => {
+    let octave = this.state.octave;
+    let release = this.state.release;
+    if (key === "z") {
+      duoSynth.triggerAttackRelease(`C${octave}`, release);
+    }
+    if (key === "s") {
+      duoSynth.triggerAttackRelease(`C#${octave}`, release);
+    }
+    if (key === "x") {
+      duoSynth.triggerAttackRelease(`D${octave}`, release);
+    }
+    if (key === "d") {
+      duoSynth.triggerAttackRelease(`D#${octave}`, release);
+    }
+    if (key === "c") {
+      duoSynth.triggerAttackRelease(`E${octave}`, release);
+    }
+    if (key === "v") {
+      duoSynth.triggerAttackRelease(`F${octave}`, release);
+    }
+    if (key === "g") {
+      duoSynth.triggerAttackRelease(`F#${octave}`, release);
+    }
+    if (key === "b") {
+      duoSynth.triggerAttackRelease(`G${octave}`, release);
+    }
+    if (key === "h") {
+      duoSynth.triggerAttackRelease(`G#${octave}`, release);
+    }
+    if (key === "n") {
+      duoSynth.triggerAttackRelease(`A${octave}`, release);
+    }
+    if (key === "j") {
+      duoSynth.triggerAttackRelease(`A#${octave}`, release);
+    }
+    if (key === "m") {
+      duoSynth.triggerAttackRelease(`B${octave}`, release);
+    }
+  };
 
   render() {
     return (
-      <div className="module">
+      <div>
+        <KeyboardEventHandler
+          handleKeys={[
+            "z",
+            "s",
+            "x",
+            "d",
+            "c",
+            "v",
+            "g",
+            "b",
+            "h",
+            "n",
+            "j",
+            "m"
+          ]}
+          onKeyEvent={(key, e) => {
+            this.handlePlayKeys(key);
+            // console.log(`do something upon keydownevent of ${key}`);
+          }}
+        />
         <h2>Duo Synth</h2>
-        <div className="knobs" ><Toggle state="false" onChange={this.handleAttack} /></div>
-        <div className="knobs" ><Dial onChange={this.handleGain} /></div>
-        <div className="knobs" ><Dial value="300" min="0" max="1000" onChange={this.handleFreq} /></div>
-        <div className="knobs" ><Sequencer /></div>
+
+        <div className="handlers">
+          <button onClick={this.octaveDown}>➖</button>{" "}
+          <button onClick={this.octaveUp}>➕</button>
+          <Dial onChange={this.handleGain} />
+          <Dial value="1" min="0" max="3" onChange={this.handleRelease} />
+        </div>
       </div>
     );
   }

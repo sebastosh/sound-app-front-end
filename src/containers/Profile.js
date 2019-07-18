@@ -44,7 +44,7 @@ class Profile extends React.Component {
   render() {
     let sessions = this.props.currentUser.attributes.sessions.map(session => {
       return (
-        <div className={`card`} key={session.id}>
+        <div className="card" key={session.id}>
           <Link to={`/sessions/${session.id}`}>{session.name}</Link>
         </div>
       );;

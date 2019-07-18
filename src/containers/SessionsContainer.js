@@ -1,6 +1,4 @@
 import { Link } from "react-router-dom";
-import Session from "../components/Session";
-
 import React, { Component } from "react";
 
 export class SessionsContainer extends Component {
@@ -17,18 +15,6 @@ export class SessionsContainer extends Component {
     return (
       <div>
         {renderSessions}
-        {/* {this.state.currentUser.id === 2 ? <div>NO SESSIONS</div> : (
-              <Route
-                path={`/sessions/:sessionsId`}
-                render={routerProps => (
-                  <SessionShow
-                    {...routerProps}
-                    sessions={this.state.sessions}
-                    currentUser={this.state.currentUser}
-                  />
-                )}
-              />
-            )} */}
       </div>
     );
   }

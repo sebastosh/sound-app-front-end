@@ -1,21 +1,40 @@
-import React, { Component } from 'react'
-export class Session extends Component {
-    render() {
+import React from "react";
+import DuoSynth from './DuoSynth'
+const API = "http://localhost:3000";
 
-    console.log('session:', this.props.session.name, this.props.session.id);
-   
-      
+class Session extends React.Component {
+  state = {
+    apply: false,
+    data: []
+  };
 
+  componentDidMount() {
+    const USER = this.props.match.url;
 
-        return (
-            
-            <div className="card">
-               <h3>{this.props.session.name}</h3>
-             
-                {/*{orgCall} */}
-            </div>
-        )
-    }
+    fetch(API + USER)
+      .then(response => response.json())
+      .then(session => this.setState({ data: session.data.attributes }));
+  }
+
+  handleApply = () => {
+    this.setState({
+      apply: true
+    });
+  };
+
+  handleCancel = () => {
+    this.setState({
+      apply: false
+    });
+  };
+  render() {
+    return (
+      <div className="session">
+        <h1>{this.state.data.name}</h1>
+      <DuoSynth />
+      </div>
+    );
+  }
 }
 
-export default Session
+export default Session;
