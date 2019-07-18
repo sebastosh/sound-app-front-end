@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Dial, Toggle, Slider, TextButton } from "react-nexusui";
+import { Dial } from "react-nexusui";
 import Tone from "tone";
 import KeyboardEventHandler from "react-keyboard-event-handler";
 
@@ -100,8 +100,8 @@ export class Synth extends Component {
         <h2>Duo Synth</h2>
 
         <div className="handlers">
-          <button onClick={this.octaveDown}>➖</button>{" "}
-          <button onClick={this.octaveUp}>➕</button>
+          <button onClick={this.octaveDown}>-</button>{" "}
+          <button onClick={this.octaveUp}>+</button>
           <Dial onChange={this.handleGain} />
           <Dial value="1" min="0" max="3" onChange={this.handleRelease} />
         </div>

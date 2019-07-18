@@ -3,60 +3,70 @@ import { Link } from "react-router-dom";
 
 class Profile extends React.Component {
   state = {
+    currentUser: {},
+    users: [],
     userSessions: []
   };
 
   componentDidMount() {
-    console.log("componentDidMount: ");
+    if (localStorage.token) {
+      fetch("http://localhost:3000/profile", {
+        headers: { Authorization: localStorage.token }
+      })
+        .then(res => res.json())
+        .then(profileInfo => {
+          console.log("componentDidMount profileInfo: ", profileInfo);
+          console.log("componentDidMount token:", localStorage.token);
+          this.getUser(profileInfo);
+        });
+    } else {
+      console.log("nobody here");
+    }
   }
-  componentDidUpdate() {
-    console.log("componentDidUpdate: ");
-  }
 
-  handleChange = e => {
-    console.log("e: ", e.target.value);
-    //    this.setState({
-    //         singleArtWork: {
-    //             ...this.state.singleArtWork,
-    //             [e.target.name]: e.target.value
-    //         }
-
-    //     })
-  };
-
-  handleSubmit = e => {
-    e.preventDefault();
-    // fetch('http://localhost:3000/artworks', {
-    //     method: 'POST',
-    //     headers: {
-    //     'Content-Type': 'application/json',
-    //     Accept: 'application/json'
-    //     },
-    //     body: JSON.stringify(this.state.singleArtWork)
-    // })
-    //     .then(res => res.json())
-    //     .then(resp => {
-    //         this.setState({ artistWorks: [resp, ...this.state.artistWorks]})
-    //         console.log("Newart", resp)
-    //     })
+  getUser = userData => {
+    console.log("getUser from Profile:", userData);
+    fetch("http://localhost:3000/users")
+      .then(response => response.json())
+      .then(usersData => {
+        this.setState({ users: usersData.data }, () => {
+          console.log("getUser Fetch and setState", this.state.users);
+          let thisUser;
+          thisUser = this.state.users.find(
+            user => user.attributes.username === userData.username
+          );
+          console.log('thisUser: ', thisUser);
+          this.setState({
+            currentUser: thisUser,
+            userSessions: thisUser.attributes.sessions
+          });
+        });
+      });
   };
 
   render() {
-    let sessions = this.props.currentUser.attributes.sessions.map(session => {
+console.log(this.state.currentUser);
+
+let sessions
+if (!!this.state.currentUser.attributes) {
+  sessions = this.state.currentUser.attributes.sessions.map(session => {
       return (
         <div className="card" key={session.id}>
           <Link to={`/sessions/${session.id}`}>{session.name}</Link>
         </div>
-      );;
-    });
+      )
+    })
+  }
+      
+ 
 
     return (
       <div>
-        <h1>{this.props.currentUser.attributes.username}'s Profile</h1>
-        <h2>Current Sessions</h2>
+        {!!this.state.currentUser.attributes ? <h1>{this.state.currentUser.attributes.username}'s Sessions</h1> : <h1>One Sec</h1>}
+      
         {sessions}
       </div>
-    );
+    )
   }
 }
 

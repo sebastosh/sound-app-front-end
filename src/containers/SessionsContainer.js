@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 export class SessionsContainer extends Component {
   render() {
-    const userSessions = this.props.currentSessions;
+    const userSessions = this.props.userSessions;
     let renderSessions = userSessions.map(session => {
       return (
         <div className={`card`} key={session.id}>

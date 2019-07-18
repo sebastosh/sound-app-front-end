@@ -7,24 +7,16 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
-import './App.css'
+import "./App.css";
 
 export default class App extends React.Component {
   state = {
     currentUser: {},
     users: [],
-    currentSessions: []
+    userSessions: []
   };
 
   componentDidMount() {
-    console.log("componentDidMount: ");
-    fetch("http://localhost:3000/users")
-      .then(response => response.json())
-      .then(usersData => {
-        this.setState({
-          users: usersData
-        });
-      });
     if (localStorage.token) {
       fetch("http://localhost:3000/profile", {
         headers: { Authorization: localStorage.token }
@@ -33,36 +25,41 @@ export default class App extends React.Component {
         .then(profileInfo => {
           this.getUser(profileInfo);
         });
+    } else {
+      console.log("nobody here");
     }
-  }
-  componentDidUpdate() {
-    console.log("componentDidUpdate:", this.props.currentUser);
   }
 
   getUser = userData => {
-    let thisUser;
-    thisUser = this.state.users.data.find(
-      user => user.attributes.username === userData.username
-    );
-    this.setState({ 
-      currentUser: thisUser,
-      currentSessions: thisUser.attributes.sessions
-     });
+    fetch("http://localhost:3000/users")
+      .then(response => response.json())
+      .then(usersData => {
+        this.setState({ users: usersData.data }, () => {
+          let thisUser;
+          thisUser = this.state.users.find(
+            user => user.attributes.username === userData.username
+          );
+          this.setState({
+            currentUser: thisUser,
+            userSessions: thisUser.attributes.sessions
+          });
+        });
+      });
   };
 
   clearUser = () => {
     console.log("User gone");
-    this.setState({ 
+    this.setState({
       currentUser: {},
-      currentSessions: []
-     });
+      userSessions: []
+    });
   };
 
   render() {
     return (
       <React.Fragment>
         <Router>
-          <NavBar />
+          <NavBar appData={this.state} />
           <Route
             path="/login"
             render={routerProps => (
@@ -85,31 +82,28 @@ export default class App extends React.Component {
           <Route
             path="/profile"
             render={routerProps => (
-              <Profile {...routerProps} currentUser={this.state.currentUser} />
+              <Profile {...routerProps} getUser={this.getUser} currentUser={this.state.currentUser} />
             )}
           />
-          
+
           <div>
-            <Route exact path='/' render={routerProps => <SessionsContainer {...routerProps} currentSessions={this.state.currentSessions} />}  />
-            
-            {this.state.currentSessions === 0 ? null : <Route path={`/sessions/:sessionsId`} render={routerProps => <Session {...routerProps} />} />}
-            
-          
+            <Route
+              exact
+              path="/"
+              render={routerProps => (
+                <SessionsContainer
+                  {...routerProps}
+                  userSessions={this.state.userSessions}
+                />
+              )}
+            />
 
-
-
-            {/* {!this.state.currentSessions ? null : (
+            {this.state.userSessions === 0 ? null : (
               <Route
-                exact
-                path="/"
-                render={routerProps => (
-                  <SessionsContainer
-                    {...routerProps}
-                    currentSessions={this.state.currentSessions}
-                  />
-                )}
+                path={`/sessions/:sessionsId`}
+                render={routerProps => <Session {...routerProps} />}
               />
-            )} */}
+            )}
           </div>
         </Router>
       </React.Fragment>
