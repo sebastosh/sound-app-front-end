@@ -15,8 +15,6 @@ class Profile extends React.Component {
       })
         .then(res => res.json())
         .then(profileInfo => {
-          console.log("componentDidMount profileInfo: ", profileInfo);
-          console.log("componentDidMount token:", localStorage.token);
           this.getUser(profileInfo);
         });
     } else {
@@ -25,17 +23,14 @@ class Profile extends React.Component {
   }
 
   getUser = userData => {
-    console.log("getUser from Profile:", userData);
     fetch("http://localhost:3000/users")
       .then(response => response.json())
       .then(usersData => {
         this.setState({ users: usersData.data }, () => {
-          console.log("getUser Fetch and setState", this.state.users);
           let thisUser;
           thisUser = this.state.users.find(
             user => user.attributes.username === userData.username
           );
-          console.log('thisUser: ', thisUser);
           this.setState({
             currentUser: thisUser,
             userSessions: thisUser.attributes.sessions
@@ -45,28 +40,27 @@ class Profile extends React.Component {
   };
 
   render() {
-console.log(this.state.currentUser);
-
-let sessions
-if (!!this.state.currentUser.attributes) {
-  sessions = this.state.currentUser.attributes.sessions.map(session => {
-      return (
-        <div className="card" key={session.id}>
-          <Link to={`/sessions/${session.id}`}>{session.name}</Link>
-        </div>
-      )
-    })
-  }
-      
- 
+    let sessions;
+    if (!!this.state.currentUser.attributes) {
+      sessions = this.state.currentUser.attributes.sessions.map(session => {
+        return (
+          <div className="card" key={session.id}>
+            <Link to={`/sessions/${session.id}`}>{session.name}</Link>
+          </div>
+        );
+      });
+    }
 
     return (
       <div>
-        {!!this.state.currentUser.attributes ? <h1>{this.state.currentUser.attributes.username}'s Sessions</h1> : <h1>One Sec</h1>}
-      
+        {!!this.state.currentUser.attributes ? (
+          <h1>{this.state.currentUser.attributes.username}'s Sessions</h1>
+        ) : (
+          <h1>One Sec</h1>
+        )}
         {sessions}
       </div>
-    )
+    );
   }
 }
 

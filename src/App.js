@@ -7,7 +7,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
-import "./App.css";
+import "./App.scss";
 
 export default class App extends React.Component {
   state = {

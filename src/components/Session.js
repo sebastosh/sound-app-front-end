@@ -1,5 +1,6 @@
 import React from "react";
-import DuoSynth from './DuoSynth'
+import DosSynth from './DosSynth'
+import BassSynth from './BassSynth'
 const API = "http://localhost:3000";
 
 class Session extends React.Component {
@@ -29,9 +30,10 @@ class Session extends React.Component {
   };
   render() {
     return (
-      <div className="session">
+      <div className="session-container">
         <h1>{this.state.data.name}</h1>
-      <DuoSynth />
+      <DosSynth />
+      <BassSynth />
       </div>
     );
   }
