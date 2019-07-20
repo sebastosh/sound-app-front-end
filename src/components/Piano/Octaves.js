@@ -1,7 +1,9 @@
 import React from 'react'
 
 const Octaves = (props) => {
+	
 	return (
+
 		<div className="octave">
 			<div>Octave:</div>
 			<div>
