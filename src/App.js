@@ -14,7 +14,8 @@ export default class App extends React.Component {
   state = {
     currentUser: {},
     users: [],
-    userSessions: []
+    userSessions: [],
+    instruments: [],
   };
 
   componentDidMount() {
@@ -29,6 +30,9 @@ export default class App extends React.Component {
     } else {
       console.log("nobody here");
     }
+
+
+
   }
 
   getUser = userData => {
@@ -49,6 +53,7 @@ export default class App extends React.Component {
   };
 
   clearUser = () => {
+    console.clear()
     console.log("User gone");
     this.setState({
       currentUser: {},
@@ -56,11 +61,18 @@ export default class App extends React.Component {
     });
   };
 
+  addSession = (session) => {
+    console.log(session);
+    this.setState({
+      userSessions: [session, ...this.state.userSessions]
+    });
+  }
+
   render() {
     return (
       <React.Fragment>
         <Router>
-          <NavBar currentUser={this.state.currentUser} />
+          <NavBar />
           <Route
             path="/login"
             render={routerProps => (
@@ -96,7 +108,8 @@ export default class App extends React.Component {
             render={routerProps => (
               <NewSessionForm
                 {...routerProps}
-                currentUser={this.props.currentUser}
+                sessionUser={this.state.currentUser}
+                addSession={this.addSession}
               />
             )}
           />

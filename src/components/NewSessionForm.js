@@ -5,39 +5,27 @@ import { NavLink } from "react-router-dom";
 
 export class NewSessionForm extends Component {
   state = {
-      instruments: {},
       name: '',
       user_id: '',
-      instrument_id:''
+      instrument_id:'',
+      currentUser: {},
+      instruments: []
   }
 
-  static getDerivedStateFromProps(props, state) {
-     console.log('props, state: ', props, state)
-     fetch("http://localhost:3000/instruments")
+  componentDidMount(){
+    console.log('componentDidMount');
+      fetch("http://localhost:3000/instruments")
       .then(response => response.json())
       .then(instrumentData => {
-        this.getInstruments(instrumentData)
-        console.log('instrumentData: ', instrumentData);
-        this.setState({
-          instruments: instrumentData
-        });
+        this.setState(
+          { instruments: instrumentData.data },
+            () => {                        //callback
+              console.log('this.state', this.state) // Mustkeom
+            }
+      );
         
-      });
-    
-    
-  }
-
-  // componentWillMount() {
-  //   fetch("http://localhost:3000/instruments")
-  //     .then(response => response.json())
-  //     .then(instrumentData => {
-  //       console.log('instrumentData: ', instrumentData);
-  //       this.setState({
-  //         instruments: instrumentData
-  //       });
-  //     });
-  // }
-
+       })
+      }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -47,8 +35,8 @@ export class NewSessionForm extends Component {
       user_id: this.state.user_id,
       instrument_id: this.state.instrument_id
   }
-  console.log( 'newsession fetch',newSession );
-debugger
+  console.log('03 newsession ready fetch', newSession );
+
     fetch("http://localhost:3000/sessions", {
       method: "POST",
       headers: {
@@ -58,41 +46,39 @@ debugger
       body: JSON.stringify(newSession)
     })
       .then(res => res.json())
-      .then(this.props.history.push("/"));
+      .then(newSession => {
+        this.props.addSession(newSession)
+        this.props.history.push("/")});
+        
   };
 
   handleChange = e => {
       this.setState({ [e.target.name]: e.target.value });
   };
 
-  getInstruments = (instruments) => {
-      console.log('there is fucking instruments here', instruments)
+  setInstrument = instrument => {
+    console.log(instrument.target.id);
  
-      //   let sessionInstrumentChoice = this.state.instruments.map(instrument => {
-      //   return <div onClick={this.chooseInstrument}>{instrument.name}</div>})
-      //   console.log('sessionInstrumentChoice: ', sessionInstrumentChoice);
+    console.log('this.props.sessionUser: ', this.props.sessionUser.id);
+    this.setState(
+      { instrument_id: instrument.target.id,
+      user_id: this.props.sessionUser.id
+     },
+        () => {                        //callback
+          console.log('added instrument id', this.state) // Mustkeom
+        }
+  );
+  }
+  
 
-      }
+
 
   render() {
-    console.log('newformstate',this.state.instruments);
-
-    // // let sessionInstrumentChoice
-    
-    // if (this.state.instruments === {}) {
-    //   console.log('there is fucking instruments here'); }
-    //   else {
-    //     let sessionInstrumentChoice = this.state.instruments.map(instrument => {
-    //     return <div onClick={this.chooseInstrument}>{instrument.name}</div>})
-    //     console.log('sessionInstrumentChoice: ', sessionInstrumentChoice);
-    //    }
-
      
-    
- 
-      
-   
-    
+      let instruments = this.state.instruments.map(instrument => {
+        return <div key={instrument.id} userId={instrument} id={instrument.id} className="new-instrument" onClick={this.setInstrument} >{instrument.attributes.name}</div>
+      })
+
     return (
         <form className="new-session-form" onSubmit={this.handleSubmit}>
           <input
@@ -101,7 +87,7 @@ debugger
             onChange={this.handleChange}
             name="name"
           />
-          
+          {instruments}
           <input type="submit" value="New Session" />
           <NavLink to="/">❌</NavLink>
         </form>
