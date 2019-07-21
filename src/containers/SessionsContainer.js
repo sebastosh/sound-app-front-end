@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { Component } from "react";
 
 export class SessionsContainer extends Component {
+
   render() {
     const userSessions = this.props.userSessions;
     let renderSessions = userSessions.map(session => {

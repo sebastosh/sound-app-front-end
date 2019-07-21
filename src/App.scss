@@ -17,6 +17,12 @@ display: inline-block;
 float: inline-end;
 }
 
+.hidden { display:none; }
+
+.new-session-form {
+	display: block;
+	border: 1px solid}
+  
 form {
 display: grid;
 margin: 0 auto;

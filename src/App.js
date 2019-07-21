@@ -59,7 +59,7 @@ export default class App extends React.Component {
     return (
       <React.Fragment>
         <Router>
-          <NavBar appData={this.state} />
+          <NavBar currentUser={this.state.currentUser} />
           <Route
             path="/login"
             render={routerProps => (
@@ -93,7 +93,8 @@ export default class App extends React.Component {
               render={routerProps => (
                 <SessionsContainer
                   {...routerProps}
-                  userSessions={this.state.userSessions}
+                  userSessions={this.state.userSessions} 
+                  currentUser={this.state.currentUser}
                 />
               )}
             />
