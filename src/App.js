@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import SessionsContainer from "./containers/SessionsContainer";
 import Session from "./components/Session";
+import NewSessionForm from "./components/NewSessionForm";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
@@ -82,7 +83,21 @@ export default class App extends React.Component {
           <Route
             path="/profile"
             render={routerProps => (
-              <Profile {...routerProps} getUser={this.getUser} currentUser={this.state.currentUser} />
+              <Profile
+                {...routerProps}
+                getUser={this.getUser}
+                currentUser={this.state.currentUser}
+              />
+            )}
+          />
+
+          <Route
+            path="/new-session"
+            render={routerProps => (
+              <NewSessionForm
+                {...routerProps}
+                currentUser={this.props.currentUser}
+              />
             )}
           />
 
@@ -93,7 +108,7 @@ export default class App extends React.Component {
               render={routerProps => (
                 <SessionsContainer
                   {...routerProps}
-                  userSessions={this.state.userSessions} 
+                  userSessions={this.state.userSessions}
                   currentUser={this.state.currentUser}
                 />
               )}
