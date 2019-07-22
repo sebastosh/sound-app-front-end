@@ -7,7 +7,7 @@ export class SessionsContainer extends Component {
     const userSessions = this.props.userSessions;
     let renderSessions = userSessions.map(session => {
       return (
-        <div className={`card`} key={session.id}>
+        <div className="card" key={session.id}>
           <Link to={`/sessions/${session.id}`}>{session.name}</Link>
         </div>
       );
@@ -16,6 +16,9 @@ export class SessionsContainer extends Component {
     return (
       <div>
         {renderSessions}
+        <div className="card">
+        <Link to="/new-session">🎹</Link>
+        </div>
       </div>
     );
   }

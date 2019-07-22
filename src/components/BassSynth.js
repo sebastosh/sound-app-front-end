@@ -8,26 +8,56 @@ import ReactDOM from "react-dom";
 export class Keys extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      firstPressed: false,
+      octave: 1,
+      name: '',
+      settings: {
+        type : "triangle",
+        attack : 0.005 ,
+        decay : 0.1 ,
+        sustain : 0.3 ,
+        release : 1  
+      }
+    };
 
-    // tone.js build
-
-    // this.vol = new Tone.Volume(0);
-    // this.synth = new Tone.Synth().toMaster();
-    // this.synth.chain(this.vol, Tone.Master);
-    
+   
     this.gain = new Tone.Gain(0.1).toMaster();
-
     this.synth = new Tone.Synth().connect(this.gain);
     
+    
+
     // bindings
     this.onDownKey = this.onDownKey.bind(this);
     this.onUpKey = this.onUpKey.bind(this);
     this.handleClickOctave = this.handleClickOctave.bind(this);
 
-    this.state = {
-      firstPressed: false,
-      octave: 1     
-    };
+
+    
+       
+  }
+
+  handleEnvelope = e => {
+    console.log('e: ', e[0], e[1], e[2], e[3],);
+    
+    console.log('this.synth.envelope: ', this.synth.envelope.release);
+    console.log('this.state.settings.release: ', this.state.settings.release);
+
+      this.synth.envelope.attack = e[0] 
+      this.synth.envelope.decay = e[1] 
+      this.synth.envelope.sustain = e[2] 
+      this.synth.envelope.release = e[3]  
+    this.setState({
+      name: this.props.synthParams.name,
+      settings: {
+        type : "triangle",
+        attack: e[0] ,
+        decay: e[1] ,
+        sustain: e[2] ,
+        release: e[3]      
+        }
+    })
+
   }
 
   handleGain = e => {
@@ -115,10 +145,47 @@ export class Keys extends Component {
     this.setState({ firstPressed: !this.state.firstPressed });
   };
 
+  sendSynth = () => {
+    this.props.saveSynth()
+  }
+
+  saveSynth = () => {
+    let synthParams = {
+      "name" : `${this.props.synthParams.name}`,
+      "settings" : {
+        "type" : "triangle",
+        "attack" : `${this.state.settings.attack}`,
+        "decay" : `${this.state.settings.decay}`,
+        "sustain" : `${this.state.settings.sustain}`,
+        "release" : `${this.state.settings.release}`     
+        }
+    }
+ 
+    console.log('this.props.synthParams: ', this.props.synthParams.id);
+    console.log('synthParams: ', synthParams);
+    fetch(`http://localhost:3000/instruments/${this.props.synthParams.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(synthParams)
+    })
+      .then(res => res.json())
+      .then(synthObject => {
+        console.log('synthObject: ', synthObject);
+        // this.props.addSession(synthObject)
+        // this.props.history.push("/")
+      });
+        
+  };
+    
+
   render() {
-    console.clear()
-    console.log(this.gain.gain.value);
-    return (
+     return (
+     
+      
+      
       <div
         className="synth"
         tabIndex={1}
@@ -126,7 +193,8 @@ export class Keys extends Component {
         onKeyPress={this.onKeyPressed}
         onKeyUp={this.onKeyLifted}
       >
-        <h2>Bass Synth</h2>
+       
+        <h2>Bass Synth </h2>
         <div className="handlers">
           <Dial onChange={this.handleGain} />
         </div>
@@ -136,13 +204,13 @@ export class Keys extends Component {
             size={[100, 100]}
             numberOfSliders="4"
             min="0"
-            max="1"
-            candycane="1"
+            max="30"
+            candycane="4"
             values={[
-              this.state.envelopeAttack,
-              this.state.envelopeDecay,
-              this.state.envelopeSustain,
-              this.state.envelopeRelease
+              this.state.settings.attack,
+              this.state.settings.decay,
+              this.state.settings.sustain,
+              this.state.settings.release
             ]}
             onChange={this.handleEnvelope}
           />
@@ -225,6 +293,7 @@ export class Keys extends Component {
           octave={this.state.octave}
           handleClick={this.handleClickOctave}
         />
+         <span className="save-synth" onClick={this.saveSynth}>💾</span>
       </div>
     );
   }

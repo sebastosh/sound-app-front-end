@@ -16,8 +16,6 @@ export class Synth extends Component {
     envelopeRelease: .3
   };
 
-
-
   keyboard = ["z","s","x","d","c","v","g","b","h","n","j","m","-","="]
 
   handleEnvelope = e => {

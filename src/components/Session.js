@@ -4,9 +4,12 @@ import BassSynth from './BassSynth'
 const API = "http://localhost:3000";
 
 class Session extends React.Component {
-  state = {
-    apply: false,
-    data: []
+  state = {    
+    name: '',
+    currentUser: {},
+    user_id: '',
+    instrument_id: '',
+    instrument: {}
   };
 
   componentDidMount() {
@@ -14,26 +17,28 @@ class Session extends React.Component {
 
     fetch(API + USER)
       .then(response => response.json())
-      .then(session => this.setState({ data: session.data.attributes }));
+      .then(session => {
+        console.log('session: ', session);
+
+        this.setState({ 
+        name: session.data.attributes.name,
+        currentUser: session.data.attributes.user,
+        user_id: session.data.attributes.user_id,
+        instrument_id: session.data.attributes.instrument_id,
+        instrument: session.data.attributes.instrument
+      })
+      });
   }
 
-  handleApply = () => {
-    this.setState({
-      apply: true
-    });
-  };
+  
+ 
 
-  handleCancel = () => {
-    this.setState({
-      apply: false
-    });
-  };
   render() {
+
     return (
       <div className="session-container">
-        <h1>{this.state.data.name}</h1>
-      <DosSynth />
-      <BassSynth />
+        <h1>{this.state.name} - {this.state.instrument.name}</h1>
+        {this.state.instrument.name === "Bass Synth" ? <BassSynth synthParams={this.state.instrument} /> : <DosSynth synthParams={this.state.instrument} />}
       </div>
     );
   }

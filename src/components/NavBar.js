@@ -9,8 +9,8 @@ export class NavBar extends Component {
       
     <div className="navbar">
       
-      <NavLink to="/">Sessions</NavLink>
-      <NavLink to="/new-session">🎹</NavLink>
+      <NavLink to="/">🎛</NavLink>
+      
         
      <div className="navuser"> {localStorage.token ? (<div><NavLink to="/profile">Profile</NavLink><NavLink to="/signout">Signout</NavLink>
    </div>) : (<div><NavLink to="/login">Login</NavLink>
