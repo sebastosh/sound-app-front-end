@@ -194,7 +194,6 @@ export class Keys extends Component {
         onKeyUp={this.onKeyLifted}
       >
        
-        <h2>Bass Synth </h2>
         <div className="handlers">
           <Dial onChange={this.handleGain} />
         </div>

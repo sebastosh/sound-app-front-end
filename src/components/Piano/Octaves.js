@@ -5,10 +5,9 @@ const Octaves = (props) => {
 	return (
 
 		<div className="octave">
-			<div>Octave:</div>
 			<div>
 				<button onClick={() => props.handleClick('minus')}>-</button>
-				<p>{props.octave}</p>
+				{props.octave}
 				<button onClick={() => props.handleClick('plus')}>+</button>
 			</div>
 		</div>
