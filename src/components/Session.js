@@ -17,9 +17,7 @@ class Session extends React.Component {
 
     fetch(API + USER)
       .then(response => response.json())
-      .then(session => {
-        console.log('session: ', session);
-
+      .then(session => { 
         this.setState({ 
         name: session.data.attributes.name,
         currentUser: session.data.attributes.user,
@@ -38,7 +36,7 @@ class Session extends React.Component {
     return (
       <div className="session-container">
         <h1>{this.state.name} - {this.state.instrument.name}</h1>
-        {this.state.instrument.name === "Bass Synth" ? <BassSynth synthParams={this.state.instrument} /> : <DosSynth synthParams={this.state.instrument} />}
+        {this.state.instrument.name === "Bass Synth" ? <BassSynth synthApi={this.state.instrument} /> : <DosSynth synthApi={this.state.instrument} />}
       </div>
     );
   }

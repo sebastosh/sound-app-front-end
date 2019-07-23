@@ -9,20 +9,16 @@ export class NewSessionForm extends Component {
       user_id: '',
       instrument_id:'',
       currentUser: {},
-      instruments: []
+      instruments: [],
   }
 
   componentDidMount(){
-    console.log('componentDidMount');
       fetch("http://localhost:3000/instruments")
       .then(response => response.json())
       .then(instrumentData => {
         this.setState(
           { instruments: instrumentData.data },
-            () => {                        //callback
-              console.log('this.state', this.state) // Mustkeom
-            }
-      );
+        );
         
        })
       }
@@ -35,7 +31,7 @@ export class NewSessionForm extends Component {
       user_id: this.state.user_id,
       instrument_id: this.state.instrument_id
   }
-  console.log('03 newsession ready fetch', newSession );
+  
 
     fetch("http://localhost:3000/sessions", {
       method: "POST",
@@ -56,17 +52,13 @@ export class NewSessionForm extends Component {
       this.setState({ [e.target.name]: e.target.value });
   };
 
-  setInstrument = instrument => {
-    console.log(instrument.target.id);
  
-    console.log('this.props.sessionUser: ', this.props.sessionUser.id);
+  setInstrument = instrument => {
     this.setState(
       { instrument_id: instrument.target.id,
-      user_id: this.props.sessionUser.id
-     },
-        () => {                        //callback
-          console.log('added instrument id', this.state) // Mustkeom
-        }
+      user_id: this.props.sessionUser.id,
+
+     }
   );
   }
   
@@ -76,7 +68,7 @@ export class NewSessionForm extends Component {
   render() {
      
       let instruments = this.state.instruments.map(instrument => {
-        return <div key={instrument.id} userId={instrument} id={instrument.id} className="new-instrument" onClick={this.setInstrument} >{instrument.attributes.name}</div>
+        return <div key={instrument.id} id={instrument.id} className="new-instrument" onClick={this.setInstrument} >{instrument.attributes.name}</div>
       })
 
     return (
@@ -89,7 +81,7 @@ export class NewSessionForm extends Component {
           />
           {instruments}
           <input type="submit" value="New Session" />
-          <NavLink to="/">❌</NavLink>
+          <NavLink to="/"><span role="img" aria-label="cross mark">❌</span></NavLink>
         </form>
    
   

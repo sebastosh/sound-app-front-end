@@ -15,7 +15,6 @@ export default class App extends React.Component {
     currentUser: {},
     users: [],
     userSessions: [],
-    instruments: [],
   };
 
   componentDidMount() {
@@ -62,7 +61,7 @@ export default class App extends React.Component {
   };
 
   addSession = (session) => {
-    console.log(session);
+    console.log('New session', session);
     this.setState({
       userSessions: [session, ...this.state.userSessions]
     });

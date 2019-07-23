@@ -26,13 +26,13 @@ class Login extends React.Component {
           })
             .then(res => res.json())
             .then(profileInfo => {
-              console.log("profileInfo from Login: ", profileInfo);
+
               this.props.getUser(profileInfo);
-              // this.props.history.push("/profile");
+              
               this.props.history.push("/");
             });
         } else {
-          //handle error, ex. show user something like, alert()
+        
           console.log("YO! didn't work, try agian");
         }
       });
@@ -43,7 +43,7 @@ class Login extends React.Component {
   };
 
   render() {
-    // console.log(this.state)
+
     return (
       <div className="login">
         <form onSubmit={this.handleSubmit}>

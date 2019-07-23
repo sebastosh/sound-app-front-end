@@ -10,50 +10,35 @@ export class Keys extends Component {
     super(props);
     this.state = {
       firstPressed: false,
-      octave: 1,
+      gain: 0.4,
+      octave: 3,
       name: "",
       settings: {
         vibratoAmount: 0.5,
         vibratoRate: 5,
         harmonicity: 1.5,
-        voice0: {
-          volume: -10,
-          portamento: 0,
-          oscillator: {
-            type: "sine"
-          },
-          filterEnvelope: {
-            attack: 0.01,
-            decay: 0,
-            sustain: 1,
-            release: 0.5
-          },
-          envelope: {
-            attack: 0.01,
-            decay: 0,
-            sustain: 1,
-            release: 0.5
-          }
-        },
-        voice1: {
-          volume: -10,
-          portamento: 0,
-          oscillator: {
-            type: "sine"
-          },
-          filterEnvelope: {
-            attack: 0.01,
-            decay: 0,
-            sustain: 1,
-            release: 0.5
-          },
-          envelope: {
-            attack: 0.01,
-            decay: 0,
-            sustain: 1,
-            release: 0.5
-          }
-        }
+        voice0Volume: -10,
+        voice0Portamento: 0,
+        voice0OscillatorType: "sine",
+        voice0FilterEnvelopeAttack: 0.01,
+        voice0FilterEnvelopeDecay: 0,
+        voice0FilterEnvelopeSustain: 1,
+        voice0FilterEnvelopeRelease: 0.5,
+        voice0EnvelopeAttack: 0.01,
+        voice0EnvelopeDecay: 0,
+        voice0EnvelopeSustain: 1,
+        voice0EnvelopeRelease: 0.5,
+        voice1Volume: -10,
+        voice1Portamento: 0,
+        voice1OscillatorType: "sine",
+        voice1FilterEnvelopeAttack: 0.01,
+        voice1FilterEnvelopeDecay: 0,
+        voice1FilterEnvelopeSustain: 1,
+        voice1FilterEnvelopeRelease: 0.5,
+        voice1EnvelopeAttack: 0.01,
+        voice1EnvelopeDecay: 0,
+        voice1EnvelopeSustain: 1,
+        voice1EnvelopeRelease: 0.5
       }
     };
 
@@ -61,16 +46,78 @@ export class Keys extends Component {
     this.synth = new Tone.DuoSynth().connect(this.gain);
 
     // bindings
+    this.handleGain = this.handleGain.bind(this);
+    this.handleVibrato = this.handleVibrato.bind(this);
+    this.handleFilter = this.handleFilter.bind(this);
+    this.handleEnvelope = this.handleEnvelope.bind(this);
+
     this.onDownKey = this.onDownKey.bind(this);
     this.onUpKey = this.onUpKey.bind(this);
+
+    this.onKeyPressed = this.onKeyPressed.bind(this);
+    this.onKeyLifted = this.onKeyLifted.bind(this);
     this.handleClickOctave = this.handleClickOctave.bind(this);
   }
 
-  handleEnvelope = e => {
+  componentDidMount() {
+    ReactDOM.findDOMNode(this.refs.divFocus).focus();
+  }
+
+  componentWillReceiveProps(props) {
+      this.setState({ name: props.synthApi.name,
+      settings: props.synthApi.settings });
+    }
+
+  handleGain = e => {
+    this.gain.gain.value = e;
+  };
+
+  handleVibrato = e => {
+    console.log("e: ", e[0], e[1], e[2]);
+
+    this.synth.vibratoAmount.value = e[0];    
+    this.synth.vibratoRate.value = e[1];   
+    this.synth.harmonicity.value = e[2];
+   
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        vibratoAmount: e[0],
+        vibratoRate: e[1],
+        harmonicity: e[2]
+      })
+    });
+  };
+
+  handleFilter = e => {
     console.log("e: ", e[0], e[1], e[2], e[3]);
 
-    console.log("voice0.envelope.attack: ", this.synth.voice0.envelope.attack);
-  
+    this.synth.voice0.filterEnvelope.attack = e[0];
+    this.synth.voice0.filterEnvelope.decay = e[1];
+    this.synth.voice0.filterEnvelope.sustain = e[2];
+    this.synth.voice0.filterEnvelope.release = e[3];
+
+    this.synth.voice1.filterEnvelope.attack = e[0];
+    this.synth.voice1.filterEnvelope.decay = e[1];
+    this.synth.voice1.filterEnvelope.sustain = e[2];
+    this.synth.voice1.filterEnvelope.release = e[3];
+    console.log("this.synth: ", this.synth);
+
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        voice0FilterEnvelopeAttack: e[0],
+        voice0FilterEnvelopeDecay: e[1],
+        voice0FilterEnvelopeSustain: e[2],
+        voice0FilterEnvelopeRelease: e[3],
+        voice1FilterEnvelopeAttack: e[0],
+        voice1FilterEnvelopeDecay: e[1],
+        voice1FilterEnvelopeSustain: e[2],
+        voice1FilterEnvelopeRelease: e[3]
+      })
+    });
+  };
+
+  handleEnvelope = e => {
+    console.log("e: ", e[0], e[1], e[2], e[3]);
 
     this.synth.voice0.envelope.attack = e[0];
     this.synth.voice0.envelope.decay = e[1];
@@ -81,26 +128,20 @@ export class Keys extends Component {
     this.synth.voice1.envelope.decay = e[1];
     this.synth.voice1.envelope.sustain = e[2];
     this.synth.voice1.envelope.release = e[3];
-    // this.setState({
-      
-    //     setting: Object.assign({}, this.state.setting, {
-    //       envelope: { 
-    //         attack: e[0],
-    //         decay: e[1],
-    //         sustain: e[2],
-    //         release: e[3]
-    //       }
-    //     })
-    //   });
- 
-    };
- 
+    console.log("this.synth: ", this.synth);
 
-  handleGain = e => {
-    this.gain.gain.value = e;
-    console.log("this.vol.volume.value: ", this.gain.gain.value);
-
-    // this.vol.value = e;
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        voice0EnvelopeAttack: e[0],
+        voice0EnvelopeDecay: e[1],
+        voice0EnvelopeSustain: e[2],
+        voice0EnvelopeRelease: e[3],
+        voice1EnvelopeAttack: e[0],
+        voice1EnvelopeDecay: e[1],
+        voice1EnvelopeSustain: e[2],
+        voice1EnvelopeRelease: e[3]
+      })
+    });
   };
 
   handleClickOctave(action) {
@@ -115,10 +156,6 @@ export class Keys extends Component {
         this.setState({ octave: 1 });
         break;
     }
-  }
-
-  componentDidMount() {
-    ReactDOM.findDOMNode(this.refs.divFocus).focus();
   }
 
   onDownKey(note) {
@@ -181,41 +218,34 @@ export class Keys extends Component {
     this.setState({ firstPressed: !this.state.firstPressed });
   };
 
-  sendSynth = () => {
-    this.props.saveSynth();
-  };
-
   saveSynth = () => {
-    let synthParams = {
-      name: `${this.props.synthParams.name}`,
-      settings: {
-        type: "triangle",
-        attack: `${this.state.settings.attack}`,
-        decay: `${this.state.settings.decay}`,
-        sustain: `${this.state.settings.sustain}`,
-        release: `${this.state.settings.release}`
-      }
+    let synthFromState = {
+      name: this.props.synthApi.name,
+      settings: this.state.settings
     };
 
-    console.log("this.props.synthParams: ", this.props.synthParams.id);
-    console.log("synthParams: ", synthParams);
-    fetch(`http://localhost:3000/instruments/${this.props.synthParams.id}`, {
+    console.log("synthFromState: ", synthFromState);
+
+    fetch(`http://localhost:3000/instruments/${this.props.synthApi.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       },
-      body: JSON.stringify(synthParams)
+      body: JSON.stringify(synthFromState)
+      // body: {"settings": this.state.settings}
     })
       .then(res => res.json())
       .then(synthObject => {
-        console.log("synthObject: ", synthObject);
-        // this.props.addSession(synthObject)
-        // this.props.history.push("/")
+        console.log("promised synth: ", synthObject);
+        console.log("compared this.props.synthApi: ", this.props.synthApi);
       });
   };
 
   render() {
+console.log('PROPS SYNTH', this.props);
+
+
     return (
       <div
         className="duo-synth"
@@ -224,25 +254,62 @@ export class Keys extends Component {
         onKeyPress={this.onKeyPressed}
         onKeyUp={this.onKeyLifted}
       >
-        <div className="handlers">
-          <Dial onChange={this.handleGain} />
+        <div className="handler">
+          <Dial value="0.4" onChange={this.handleGain} />
+          Gain
         </div>
 
-        <div className="handlers">
+        <div className="handler">
+          <Multislider
+            size={[100, 100]}
+            numberOfSliders="3"
+            min="0"
+            max="10"
+            candycane="3"
+            values={[
+              this.state.settings.vibratoAmount,
+              this.state.settings.vibratoRate,
+              this.state.settings.harmonicity
+            ]}
+            onChange={this.handleVibrato}
+          />
+          Vibrato
+        </div>
+
+        <div className="handler">
+          <Multislider
+            size={[100, 100]}
+            numberOfSliders="3"
+            min="0"
+            max="10"
+            candycane="3"
+            values={[
+              this.state.settings.voice0FilterEnvelopeAttack,
+              this.state.settings.voice0FilterEnvelopeDecay,
+              this.state.settings.voice0FilterEnvelopeSustain,
+              this.state.settings.voice0FilterEnvelopeRelease
+            ]}
+            onChange={this.handleFilter}
+          />
+          Filter Envelope
+        </div>
+
+        <div className="handler">
           <Multislider
             size={[100, 100]}
             numberOfSliders="4"
             min="0"
-            max="30"
+            max="10"
             candycane="4"
             values={[
-              this.state.settings.attack,
-              this.state.settings.decay,
-              this.state.settings.sustain,
-              this.state.settings.release
+              this.state.settings.voice0EnvelopeAttack,
+              this.state.settings.voice0EnvelopeDecay,
+              this.state.settings.voice0EnvelopeSustain,
+              this.state.settings.voice0EnvelopeRelease
             ]}
             onChange={this.handleEnvelope}
           />
+          Envelope
         </div>
         <div className="Keys">
           <Key
@@ -322,7 +389,12 @@ export class Keys extends Component {
           octave={this.state.octave}
           handleClick={this.handleClickOctave}
         />
-        <span className="save-synth" onClick={this.saveSynth}>
+        <span
+          role="img"
+          aria-label="cross mark"
+          className="save-synth"
+          onClick={this.saveSynth}
+        >
           💾
         </span>
       </div>

@@ -17,7 +17,7 @@ export class SessionsContainer extends Component {
       <div>
         {renderSessions}
         <div className="card">
-        {localStorage.token ? <Link to="/new-session">🎹</Link> : <Link to="/login">🎹</Link>}
+        {localStorage.token ? <Link to="/new-session"><span role="img" aria-label="Piano">🎹</span></Link> : <Link to="/login"><span role="img" aria-label="Piano">🎹</span></Link>}
         </div>
       </div>
     );
