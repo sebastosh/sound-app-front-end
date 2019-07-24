@@ -64,7 +64,6 @@ export class Keys extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('props.synthApi.settings', props.synthApi.settings);
       if (props.synthApi.settings === null) { console.log('no settings');} else
       {this.setState({ name: props.synthApi.name,
       settings: props.synthApi.settings });}
@@ -76,7 +75,6 @@ export class Keys extends Component {
   };
 
   handleVibrato = e => {
-    console.log("e: ", e[0], e[1], e[2]);
 
     this.synth.vibratoAmount.value = e[0];    
     this.synth.vibratoRate.value = e[1];   
@@ -92,7 +90,6 @@ export class Keys extends Component {
   };
 
   handleFilter = e => {
-    console.log("e: ", e[0], e[1], e[2], e[3]);
 
     this.synth.voice0.filterEnvelope.attack = e[0];
     this.synth.voice0.filterEnvelope.decay = e[1];
@@ -103,7 +100,6 @@ export class Keys extends Component {
     this.synth.voice1.filterEnvelope.decay = e[1];
     this.synth.voice1.filterEnvelope.sustain = e[2];
     this.synth.voice1.filterEnvelope.release = e[3];
-    console.log("this.synth: ", this.synth);
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
@@ -120,8 +116,7 @@ export class Keys extends Component {
   };
 
   handleEnvelope = e => {
-    console.log("e: ", e[0], e[1], e[2], e[3]);
-
+ 
     this.synth.voice0.envelope.attack = e[0];
     this.synth.voice0.envelope.decay = e[1];
     this.synth.voice0.envelope.sustain = e[2];
@@ -131,7 +126,6 @@ export class Keys extends Component {
     this.synth.voice1.envelope.decay = e[1];
     this.synth.voice1.envelope.sustain = e[2];
     this.synth.voice1.envelope.release = e[3];
-    console.log("this.synth: ", this.synth);
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
@@ -162,7 +156,6 @@ export class Keys extends Component {
   }
 
   onDownKey(note) {
-    console.log(`${note} played`);
     this.synth.triggerAttack(note);
   }
 
@@ -171,12 +164,10 @@ export class Keys extends Component {
   }
 
   onKeyPressed = e => {
-    console.log('e: ', e.key);
 let keyNote = e.key
 let keyBoardKeys = ["z","s","x","d","c","v","g","b","h","n","j","m"]
 
 if ( keyBoardKeys.includes(keyNote) ) { 
-
 
     let pressedNote;
     if (keyNote === "z") {
@@ -224,7 +215,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
   };
 
   onKeyLifted = e => {
-    console.log("lifted", e.key);
+ 
     this.synth.triggerRelease();
     this.setState({ firstPressed: !this.state.firstPressed });
   };
@@ -235,7 +226,6 @@ if ( keyBoardKeys.includes(keyNote) ) {
       settings: this.state.settings
     };
 
-    console.log("synthFromState: ", synthFromState);
 
     fetch(`http://localhost:3000/instruments/${this.props.synthApi.id}`, {
       method: "PATCH",
