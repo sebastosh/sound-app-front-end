@@ -14,31 +14,31 @@ export class Keys extends Component {
       octave: 3,
       name: "",
       settings: {
-        vibratoAmount: 0.5,
-        vibratoRate: 5,
-        harmonicity: 1.5,
-        voice0Volume: -10,
-        voice0Portamento: 0,
-        voice0OscillatorType: "sine",
-        voice0FilterEnvelopeAttack: 0.01,
-        voice0FilterEnvelopeDecay: 0,
-        voice0FilterEnvelopeSustain: 1,
-        voice0FilterEnvelopeRelease: 0.5,
-        voice0EnvelopeAttack: 0.01,
-        voice0EnvelopeDecay: 0,
-        voice0EnvelopeSustain: 1,
-        voice0EnvelopeRelease: 0.5,
-        voice1Volume: -10,
-        voice1Portamento: 0,
-        voice1OscillatorType: "sine",
-        voice1FilterEnvelopeAttack: 0.01,
-        voice1FilterEnvelopeDecay: 0,
-        voice1FilterEnvelopeSustain: 1,
-        voice1FilterEnvelopeRelease: 0.5,
-        voice1EnvelopeAttack: 0.01,
-        voice1EnvelopeDecay: 0,
-        voice1EnvelopeSustain: 1,
-        voice1EnvelopeRelease: 0.5
+          vibratoAmount: 0.5,
+          vibratoRate: 5,
+          harmonicity: 1.5,
+          voice0Volume: -10,
+          voice0Portamento: 0,
+          voice0OscillatorType: "sine",
+          voice0FilterEnvelopeAttack: 0.01,
+          voice0FilterEnvelopeDecay: 0,
+          voice0FilterEnvelopeSustain: 1,
+          voice0FilterEnvelopeRelease: 0.5,
+          voice0EnvelopeAttack: 0.01,
+          voice0EnvelopeDecay: 0,
+          voice0EnvelopeSustain: 1,
+          voice0EnvelopeRelease: 0.5,
+          voice1Volume: -10,
+          voice1Portamento: 0,
+          voice1OscillatorType: "sine",
+          voice1FilterEnvelopeAttack: 0.01,
+          voice1FilterEnvelopeDecay: 0,
+          voice1FilterEnvelopeSustain: 1,
+          voice1FilterEnvelopeRelease: 0.5,
+          voice1EnvelopeAttack: 0.01,
+          voice1EnvelopeDecay: 0,
+          voice1EnvelopeSustain: 1,
+          voice1EnvelopeRelease: 0.5
       }
     };
 
@@ -64,9 +64,12 @@ export class Keys extends Component {
   }
 
   componentWillReceiveProps(props) {
-      this.setState({ name: props.synthApi.name,
-      settings: props.synthApi.settings });
-    }
+    console.log('props.synthApi.settings', props.synthApi.settings);
+      if (props.synthApi.settings === null) { console.log('no settings');} else
+      {this.setState({ name: props.synthApi.name,
+      settings: props.synthApi.settings });}
+    
+  }
 
   handleGain = e => {
     this.gain.gain.value = e;
@@ -168,41 +171,48 @@ export class Keys extends Component {
   }
 
   onKeyPressed = e => {
+    console.log('e: ', e.key);
+let keyNote = e.key
+let keyBoardKeys = ["z","s","x","d","c","v","g","b","h","n","j","m"]
+
+if ( keyBoardKeys.includes(keyNote) ) { 
+
+
     let pressedNote;
-    if (e.key === "z") {
+    if (keyNote === "z") {
       pressedNote = "C";
     }
-    if (e.key === "s") {
+    if (keyNote === "s") {
       pressedNote = "C#";
     }
-    if (e.key === "x") {
+    if (keyNote === "x") {
       pressedNote = "D";
     }
-    if (e.key === "d") {
+    if (keyNote === "d") {
       pressedNote = "D#";
     }
-    if (e.key === "c") {
+    if (keyNote === "c") {
       pressedNote = "E";
     }
-    if (e.key === "v") {
+    if (keyNote === "v") {
       pressedNote = "F";
     }
-    if (e.key === "g") {
+    if (keyNote === "g") {
       pressedNote = "F#";
     }
-    if (e.key === "b") {
+    if (keyNote === "b") {
       pressedNote = "G";
     }
-    if (e.key === "h") {
+    if (keyNote === "h") {
       pressedNote = "G#";
     }
-    if (e.key === "n") {
+    if (keyNote === "n") {
       pressedNote = "A";
     }
-    if (e.key === "j") {
+    if (keyNote === "j") {
       pressedNote = "A#";
     }
-    if (e.key === "m") {
+    if (keyNote === "m") {
       pressedNote = "B";
     }
 
@@ -210,6 +220,7 @@ export class Keys extends Component {
       this.synth.triggerAttack(`${pressedNote}${this.state.octave}`);
       this.setState({ firstPressed: !this.state.firstPressed });
     }
+  }
   };
 
   onKeyLifted = e => {
@@ -243,8 +254,6 @@ export class Keys extends Component {
   };
 
   render() {
-console.log('PROPS SYNTH', this.props);
-
 
     return (
       <div

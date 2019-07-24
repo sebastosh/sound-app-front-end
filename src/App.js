@@ -8,6 +8,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
+import Jams from "./containers/Jams";
 import "./App.scss";
 
 export default class App extends React.Component {
@@ -30,8 +31,6 @@ export default class App extends React.Component {
       console.log("nobody here");
     }
 
-
-
   }
 
   getUser = userData => {
@@ -52,7 +51,7 @@ export default class App extends React.Component {
   };
 
   clearUser = () => {
-    console.clear()
+    console.clear();
     console.log("User gone");
     this.setState({
       currentUser: {},
@@ -60,18 +59,19 @@ export default class App extends React.Component {
     });
   };
 
-  addSession = (session) => {
-    console.log('New session', session);
+  addSession = session => {
+    console.log("New session", session);
     this.setState({
       userSessions: [session, ...this.state.userSessions]
     });
-  }
+  };
 
   render() {
     return (
       <React.Fragment>
         <Router>
-          <NavBar />
+          <NavBar currentUser={this.state.currentUser}/>
+          
           <Route
             path="/login"
             render={routerProps => (
@@ -125,6 +125,12 @@ export default class App extends React.Component {
                 />
               )}
             />
+             <Route
+            path="/jams"
+            render={routerProps => (
+              <Jams {...routerProps} getUser={this.getUser} />
+            )}
+          />
 
             {this.state.userSessions === 0 ? null : (
               <Route

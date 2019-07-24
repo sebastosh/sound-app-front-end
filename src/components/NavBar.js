@@ -4,12 +4,12 @@ import { NavLink } from "react-router-dom";
 export class NavBar extends Component {
 
   render() {
-
+    
     return (
       
     <div className="navbar">
       
-      <NavLink to="/">🎛</NavLink>
+      <NavLink to="/"><span role="img" aria-label="control knobs">🎛</span></NavLink>{localStorage.token ? (<NavLink to="/jams"><span role="img" aria-label="a yam rhymes with jam">🍠</span></NavLink>):null}
       
         
      <div className="navuser"> {localStorage.token ? (<div><NavLink to="/profile">Profile</NavLink><NavLink to="/signout">Signout</NavLink>
