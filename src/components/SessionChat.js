@@ -1,17 +1,20 @@
 import React from "react";
 import DosSynth from './Instruments/DosSynth'
 import BassSynth from './Instruments/BassSynth'
-import TestSynth from "./Instruments/NewSynth";
+// import NewSynth from "./Instruments/NewSynth";
 
 const API = "http://localhost:3000";
 
 class Session extends React.Component {
   state = {    
-    name: '',
+    sessionName: '',
     currentUser: {},
     user_id: '',
     instrument_id: '',
-    instrument: {}
+    instrument: {},
+    chats: [],
+		openChat: null,
+		name: ""
   };
 
   componentDidMount() {
@@ -21,7 +24,7 @@ class Session extends React.Component {
       .then(response => response.json())
       .then(session => { 
         this.setState({ 
-        name: session.data.attributes.name,
+        sessionName: session.data.attributes.name,
         currentUser: session.data.attributes.user,
         user_id: session.data.attributes.user_id,
         instrument_id: session.data.attributes.instrument_id,
@@ -37,7 +40,7 @@ class Session extends React.Component {
 
     return (
       <div className="session-container">
-        <h1>{this.state.name} - {this.state.instrument.name}</h1>
+        <h1>{this.state.sessionName} - {this.state.instrument.name}</h1>
         {this.state.instrument.name === "Bass Synth" ? <BassSynth synthApi={this.state.instrument} /> : <DosSynth synthApi={this.state.instrument} />}
       </div>
     );

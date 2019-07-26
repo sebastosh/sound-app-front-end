@@ -27,6 +27,12 @@ export class Keys extends Component {
     this.handleClickOctave = this.handleClickOctave.bind(this);
   }
 
+  handleGain = e => {
+    this.gain.gain.value = e;
+    console.log("this.vol.volume.value: ", this.gain.gain.value);
+
+    // this.vol.value = e;
+  };
   handleEnvelope = e => {
     console.log("e: ", e[0], e[1], e[2], e[3]);
 
@@ -45,12 +51,7 @@ export class Keys extends Component {
     });
   };
 
-  handleGain = e => {
-    this.gain.gain.value = e;
-    console.log("this.vol.volume.value: ", this.gain.gain.value);
 
-    // this.vol.value = e;
-  };
 
   handleClickOctave(action) {
     switch (action) {
@@ -80,49 +81,56 @@ export class Keys extends Component {
   }
 
   onKeyPressed = e => {
-    let pressedNote;
-    if (e.key === "z") {
-      pressedNote = "C";
-    }
-    if (e.key === "s") {
-      pressedNote = "C#";
-    }
-    if (e.key === "x") {
-      pressedNote = "D";
-    }
-    if (e.key === "d") {
-      pressedNote = "D#";
-    }
-    if (e.key === "c") {
-      pressedNote = "E";
-    }
-    if (e.key === "v") {
-      pressedNote = "F";
-    }
-    if (e.key === "g") {
-      pressedNote = "F#";
-    }
-    if (e.key === "b") {
-      pressedNote = "G";
-    }
-    if (e.key === "h") {
-      pressedNote = "G#";
-    }
-    if (e.key === "n") {
-      pressedNote = "A";
-    }
-    if (e.key === "j") {
-      pressedNote = "A#";
-    }
-    if (e.key === "m") {
-      pressedNote = "B";
-    }
-
-    if (!this.state.firstPressed) {
-      this.synth.triggerAttack(`${pressedNote}${this.state.octave}`);
-      this.setState({ firstPressed: !this.state.firstPressed });
-    }
-  };
+    let keyNote = e.key
+    let keyBoardKeys = ["z","s","x","d","c","v","g","b","h","n","j","m"]
+    
+    if ( keyBoardKeys.includes(keyNote) ) { 
+    
+        let pressedNote;
+        if (keyNote === "z") {
+          pressedNote = "C";
+        }
+        if (keyNote === "s") {
+          pressedNote = "C#";
+        }
+        if (keyNote === "x") {
+          pressedNote = "D";
+        }
+        if (keyNote === "d") {
+          pressedNote = "D#";
+        }
+        if (keyNote === "c") {
+          pressedNote = "E";
+        }
+        if (keyNote === "v") {
+          pressedNote = "F";
+        }
+        if (keyNote === "g") {
+          pressedNote = "F#";
+        }
+        if (keyNote === "b") {
+          pressedNote = "G";
+        }
+        if (keyNote === "h") {
+          pressedNote = "G#";
+        }
+        if (keyNote === "n") {
+          pressedNote = "A";
+        }
+        if (keyNote === "j") {
+          pressedNote = "A#";
+        }
+        if (keyNote === "m") {
+          pressedNote = "B";
+        }
+    
+        if (!this.state.firstPressed) {
+          this.synth.triggerAttack(`${pressedNote}${this.state.octave}`);
+          this.setState({ firstPressed: !this.state.firstPressed });
+        }
+      }
+      };
+    
 
   onKeyLifted = e => {
     console.log("lifted", e.key);

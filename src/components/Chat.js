@@ -2,14 +2,14 @@ import React from 'react'
 import { ActionCable } from 'react-actioncable-provider';
 
 
-class Jam extends React.Component {
+class Chat extends React.Component {
 
 	state = {
 		content: ""
 	}
 
 	sendMesssage = (event) => {
-		fetch(`http://localhost:3000/jams/${this.props.jam.id}/add_message`, {
+		fetch(`http://localhost:3000/chats/${this.props.chat.id}/add_message`, {
 			method: "POST",
 			headers: {
 				'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ class Jam extends React.Component {
 
 
   deleteMessage = (messageId) => {
-  	fetch("http://localhost:3000/jams/delete_message", {
+  	fetch("http://localhost:3000/chats/delete_message", {
   		method: "POST",
   		headers: {
 				'Content-Type': 'application/json',
@@ -57,28 +57,28 @@ class Jam extends React.Component {
 			},
 			body: JSON.stringify({
 				message_id: messageId,
-				jam_id: this.props.jam.id
+				chat_id: this.props.chat.id
 			})
   	})
   }
 
 	render(){
-		let messageComponents = this.props.jam.messages.map(message => {
+		let messageComponents = this.props.chat.messages.map(message => {
 			return(
-				<p>
+				<div key={message.id}>
 					{message.username} says: {message.content} 
 					<button onClick={(event) => this.deleteMessage(message.id)}>DELETE</button>
-				</p>
+				</div>
 
 			)
 		})
 		return (
 			<div>
 				<ActionCable
-          channel={{ channel: 'JamChannel', jam_id: this.props.jam.id }}
+          channel={{ channel: 'ChatChannel', chat_id: this.props.chat.id }}
           onReceived={this.handleSocketResponse}
         />
-				<h1>{this.props.jam.name}</h1>
+				<h1>{this.props.chat.name}</h1>
 				<textarea onChange={this.handleChange}/>
 				<button onClick={this.sendMesssage} >Enter</button>
 				{messageComponents}
@@ -88,4 +88,4 @@ class Jam extends React.Component {
 	}
 }
 
-export default Jam
+export default Chat

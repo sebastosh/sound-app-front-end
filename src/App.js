@@ -1,14 +1,16 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+// import { motion } from "framer-motion"
 import SessionsContainer from "./containers/SessionsContainer";
 import Session from "./components/Session";
+import SessionChat from "./components/SessionChat";
 import NewSessionForm from "./components/NewSessionForm";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
-import Jams from "./containers/Jams";
+import Chats from "./containers/Chats";
 import "./App.scss";
 
 export default class App extends React.Component {
@@ -70,7 +72,7 @@ export default class App extends React.Component {
     return (
       <React.Fragment>
         <Router>
-          <NavBar currentUser={this.state.currentUser}/>
+          <NavBar appState={this.state} addSession={this.addSession} getUser={this.getUser} sessionUser={this.state.currentUser}/>
           
           <Route
             path="/login"
@@ -125,10 +127,11 @@ export default class App extends React.Component {
                 />
               )}
             />
+            
              <Route
-            path="/jams"
+            path="/chats"
             render={routerProps => (
-              <Jams {...routerProps} getUser={this.getUser} />
+              <Chats {...routerProps} currentUser={this.state.currentUser} />
             )}
           />
 

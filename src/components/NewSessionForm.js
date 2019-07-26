@@ -44,6 +44,7 @@ export class NewSessionForm extends Component {
       .then(res => res.json())
       .then(newSession => {
         this.props.addSession(newSession)
+        this.props.newClick()
         this.props.history.push("/")});
         
   };
@@ -76,12 +77,13 @@ export class NewSessionForm extends Component {
           <input
             type="text"
             value={this.state.name}
+            placeholder="New Session"
             onChange={this.handleChange}
             name="name"
           />
           {instruments}
           <input type="submit" value="New Session" />
-          <NavLink to="/"><span role="img" aria-label="cross mark">❌</span></NavLink>
+          <NavLink to="/"><span onClick={this.props.newClick} role="img" aria-label="cross mark">❌</span></NavLink>
         </form>
    
   
