@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { NavLink } from "react-router-dom";
+import { NavLink, withRouter } from "react-router-dom";
 
 // import ReactDOM from "react-dom";
 
@@ -10,6 +10,7 @@ export class NewSessionForm extends Component {
       instrument_id:'',
       currentUser: {},
       instruments: [],
+      selected: []
   }
 
   componentDidMount(){
@@ -43,9 +44,10 @@ export class NewSessionForm extends Component {
     })
       .then(res => res.json())
       .then(newSession => {
+        this.props.history.push(`/sessions/${newSession.id}`)
         this.props.addSession(newSession)
         this.props.newClick()
-        this.props.history.push("/")});
+        });
         
   };
 
@@ -62,8 +64,8 @@ export class NewSessionForm extends Component {
      }
   );
   }
-  
 
+  
 
 
   render() {
@@ -91,4 +93,4 @@ export class NewSessionForm extends Component {
   }
 }
 
-export default NewSessionForm
+export default withRouter(NewSessionForm)

@@ -16,6 +16,7 @@
     "react-nexusui": "^0.1.7",
     "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
+    "reactjs-popup": "^1.4.1",
     "superagent": "^5.1.0",
     "tone": "^13.4.9"
   },

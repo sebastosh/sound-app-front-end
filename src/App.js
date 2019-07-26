@@ -72,7 +72,7 @@ export default class App extends React.Component {
     return (
       <React.Fragment>
         <Router>
-          <NavBar appState={this.state} addSession={this.addSession} getUser={this.getUser} sessionUser={this.state.currentUser}/>
+          <NavBar routerprops={this.routerProps} appState={this.state} addSession={this.addSession} getUser={this.getUser} sessionUser={this.state.currentUser}/>
           
           <Route
             path="/login"

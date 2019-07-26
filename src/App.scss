@@ -1,26 +1,39 @@
 body {
-	font-size: 1.5em; }
-  
-  .navbar {
+  font-size: 1.5em;
+}
+.navbar {
 	font-size: 1.7em;
 	margin: 0.6em 0.4em; }
   
   .navbar a,
   span {
 	margin: 0.2em;
+	color: #004eae;
 	text-decoration-line: none; }
+
+
+  
+  .help-button {
+	font-size: 0.85em;
+	border: 1px solid;
+	border-radius: 100px; }
   
   .navuser {
+	position: absolute;
 	display: inline-block;
-	float: inline-end; }
+	right: 0;
+	top: 0;
+	padding: .6em .6em .4em .4em;
+	background-color: #ffffffd9;
+
+  }
   
   .hidden {
 	display: none; }
   
   .new-session-form {
-	font-size: .4em;
-	display: inline;
-   }
+	font-size: 0.4em;
+	display: inline; }
   
   .new-instrument {
 	display: inline-block;
@@ -32,26 +45,27 @@ body {
 	display: inline-block;
 	border: 2px solid green; }
   
-  form {
-	
-	display: grid;
-	margin: 0 auto;
-	}
-  
-  input,
-  select { 
-	width: 210px;
-	font-size: 2em;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-sizing: border-box; }
-  
-  .card {
-	display: inline-grid;
-	margin: 1em;
-	padding: 0.5em;
-	border: 2px solid; }
-  
+
+form {
+  display: grid;
+  margin: 0 auto;
+}
+
+input,
+select {
+  width: 210px;
+  font-size: 2em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.card {
+  display: inline-grid;
+  margin: 1em;
+  padding: 0.5em;
+  border: 2px solid;
+}
 
 .session-container {
   margin: 0 auto;
