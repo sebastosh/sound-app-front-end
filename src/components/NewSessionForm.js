@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { NavLink, withRouter } from "react-router-dom";
+import Instrument from './Instruments'
 
 // import ReactDOM from "react-dom";
 
@@ -33,7 +34,6 @@ export class NewSessionForm extends Component {
       instrument_id: this.state.instrument_id
   }
   
-
     fetch("http://localhost:3000/sessions", {
       method: "POST",
       headers: {
@@ -44,19 +44,21 @@ export class NewSessionForm extends Component {
     })
       .then(res => res.json())
       .then(newSession => {
-        this.props.history.push(`/sessions/${newSession.id}`)
-        this.props.addSession(newSession)
+        console.log(newSession);
+        // this.props.history.push(`/sessions/${newSession.id}`)
+        // this.props.addSession(newSession)
         this.props.newClick()
-        });
-        
+        });    
   };
 
   handleChange = e => {
       this.setState({ [e.target.name]: e.target.value });
+      console.log('e.target.value: ', e.target.value);
   };
 
- 
   setInstrument = instrument => {
+    console.log('instrument: ', instrument);
+
     this.setState(
       { instrument_id: instrument.target.id,
       user_id: this.props.sessionUser.id,
@@ -65,13 +67,10 @@ export class NewSessionForm extends Component {
   );
   }
 
-  
-
-
   render() {
      
       let instruments = this.state.instruments.map(instrument => {
-        return <div key={instrument.id} id={instrument.id} className="new-instrument" onClick={this.setInstrument} >{instrument.attributes.name}</div>
+        return <Instrument key={instrument.id} setInstrument={this.setInstrument} instrument={instrument} />
       })
 
     return (

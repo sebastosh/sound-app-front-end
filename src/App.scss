@@ -2,49 +2,62 @@ body {
   font-size: 1.5em;
 }
 .navbar {
-	font-size: 1.7em;
-	margin: 0.6em 0.4em; }
-  
-  .navbar a,
-  span {
-	margin: 0.2em;
-	color: #004eae;
-	text-decoration-line: none; }
+  font-size: 1.7em;
+  margin: 0.6em 0.4em;
+}
+
+.navbar a,
+span {
+  margin: 0.2em;
+  color: #004eae;
+  text-decoration-line: none;
+}
+
+.help-button {
+  font-size: 0.85em;
+  border: 1px solid;
+  border-radius: 100px;
+}
+
+.key-ui {float:right;
+  background-color: white;
+}
 
 
-  
-  .help-button {
-	font-size: 0.85em;
-	border: 1px solid;
-	border-radius: 100px; }
-  
-  .navuser {
-	position: absolute;
-	display: inline-block;
-	right: 0;
-	top: 0;
-	padding: .6em .6em .4em .4em;
-	background-color: #ffffffd9;
+.navuser {
+  position: absolute;
+  display: inline-block;
+  right: 0;
+  top: 0;
+  padding: 0.6em 0.6em 0.4em 0.4em;
+  background-color: #ffffffd9;
+}
 
-  }
-  
-  .hidden {
-	display: none; }
-  
-  .new-session-form {
-	font-size: 0.4em;
-	display: inline; }
-  
-  .new-instrument {
-	display: inline-block;
-	border: 1px solid;
-	font-size: 2em;
-	margin: 0 0.2em; }
-  
-  .new-instrument-clicked {
-	display: inline-block;
-	border: 2px solid green; }
-  
+.hidden {
+  display: none;
+}
+
+.new-session-form {
+  font-size: 0.4em;
+  display: inline;
+}
+
+.instrument {
+  display: inline-block;
+  outline: 2px dashed;
+  outline-offset: -2px;
+  font-size: 2em;
+  margin: 0 0.2em;
+}
+
+.instrument-pick {
+  font-size: 2em;
+  margin: 0 0.2em;
+  display: inline-block;
+  outline: 2px dashed green;
+  outline-offset: -2px;
+  background-color: #ffee33;
+}
 
 form {
   display: grid;
