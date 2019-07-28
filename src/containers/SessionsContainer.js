@@ -1,18 +1,24 @@
-import { Link } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import React, { Component } from "react";
+import Session from '../components/Session'
 
 export class SessionsContainer extends Component {
 
   render() {
+
     const userSessions = this.props.userSessions;
+    console.log('userSessions: ', userSessions);
+    
     let renderSessions = userSessions.map(session => {
       return (
         <div className="card" key={session.id}>
-          <Link to={`/sessions/${session.id}`}>{session.name}</Link>
-        </div>
+          <Link to={`/sessions/${session.id}`}>{session.id}-{session.session_id}</Link>
+        
+
+      </div>
       );
     });
-
+  
     return (
       <div>
         {renderSessions}

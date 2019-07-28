@@ -1,54 +1,48 @@
 body {
-  font-size: 1.5em;
-}
-.navbar {
-  font-size: 1.7em;
-  margin: 0.6em 0.4em;
-}
+  font-size: 1.5em; }
 
-.navbar a,
-span {
-  margin: 0.2em;
-  color: #004eae;
-  text-decoration-line: none;
-}
+  .navbar {
+    width: 55%;
+    font-size: 1.4em;
+    margin: 0.6em 0.4em;
+    outline: 2px dashed;
+    outline-offset: -2px; }
+  
+  .navbar a,
+  span {
+    margin: 0.2em;
+    color: #004eae;
+    text-decoration-line: none; }
 
-.help-button {
-  font-size: 0.85em;
-  border: 1px solid;
-  border-radius: 100px;
-}
+  .navuser {
+    outline: 2px dashed;
+    outline-offset: -2px;
+    
+    position: absolute;
+    display: inline-block;
+    right: 0;
+    top: 0;
+    padding: 0.6em 0.6em 0.4em 0.4em;
+    background-color: #ffffffd9; }
 
-.key-ui {float:right;
-  background-color: white;
-}
-
-
-.navuser {
-  position: absolute;
+.nav-rotate {
   display: inline-block;
-  right: 0;
-  top: 0;
-  padding: 0.6em 0.6em 0.4em 0.4em;
-  background-color: #ffffffd9;
-}
+  transform: rotate(90deg); }
 
 .hidden {
-  display: none;
-}
+  display: none; }
 
 .new-session-form {
   font-size: 0.4em;
-  display: inline;
-}
+  display: inline; }
 
 .instrument {
+  float:inline-end;
   display: inline-block;
   outline: 2px dashed;
   outline-offset: -2px;
   font-size: 2em;
-  margin: 0 0.2em;
-}
+  margin: 0 0.2em; }
 
 .instrument-pick {
   font-size: 2em;
@@ -56,8 +50,8 @@ span {
   display: inline-block;
   outline: 2px dashed green;
   outline-offset: -2px;
-  background-color: #ffee33;
-}
+  background-color: #ffee33; }
+
 
 form {
   display: grid;
@@ -98,6 +92,17 @@ select {
   padding: 10px;
   box-sizing: border-box;
 }
+
+  
+.help-button {
+  font-size: 0.85em;
+  border: 1px solid;
+  border-radius: 100px; }
+
+.key-ui {
+  float: right;
+  background-color: white; }
+
 
 /* SYNTH */
 .synth {

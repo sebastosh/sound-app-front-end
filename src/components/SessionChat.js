@@ -1,6 +1,6 @@
 import React from "react";
 import DosSynth from './Instruments/DosSynth'
-import BassSynth from './Instruments/BassSynth'
+import Synth from './Instruments/Synth'
 // import NewSynth from "./Instruments/NewSynth";
 
 const API = "http://localhost:3000";
@@ -41,7 +41,7 @@ class Session extends React.Component {
     return (
       <div className="session-container">
         <h1>{this.state.sessionName} - {this.state.instrument.name}</h1>
-        {this.state.instrument.name === "Bass Synth" ? <BassSynth synthApi={this.state.instrument} /> : <DosSynth synthApi={this.state.instrument} />}
+        {this.state.instrument.name === "Bass Synth" ? <Synth synthApi={this.state.instrument} /> : <DosSynth synthApi={this.state.instrument} />}
       </div>
     );
   }

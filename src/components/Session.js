@@ -1,17 +1,15 @@
 import React from "react";
 import DosSynth from './Instruments/DosSynth'
-import BassSynth from './Instruments/BassSynth'
-import TestSynth from "./Instruments/NewSynth";
+import Synth from './Instruments/Synth'
+
 
 const API = "http://localhost:3000";
 
 class Session extends React.Component {
   state = {    
-    name: '',
+    sessionName: '',
     currentUser: {},
-    user_id: '',
-    instrument_id: '',
-    instrument: {}
+    instruments: []
   };
 
   componentDidMount() {
@@ -20,12 +18,14 @@ class Session extends React.Component {
     fetch(API + USER)
       .then(response => response.json())
       .then(session => { 
+        console.log('session: ', session);
+
         this.setState({ 
-        name: session.data.attributes.name,
-        currentUser: session.data.attributes.user,
-        user_id: session.data.attributes.user_id,
-        instrument_id: session.data.attributes.instrument_id,
-        instrument: session.data.attributes.instrument
+        sessionName: session.data.attributes.name,
+        // currentUser: session.data.attributes.user,
+        // user_id: session.data.attributes.user_id,
+        // instrument_id: session.data.attributes.instrument_id,
+        instruments: session.data.attributes.instruments
       })
       });
   }
@@ -35,10 +35,20 @@ class Session extends React.Component {
 
   render() {
 
+    let instruments = this.state.instruments.map(instrument => {
+      return (
+        instrument.instrument_type === "Synth" ? <Synth key={instrument.id} synthApi={instrument} /> : <DosSynth key={instrument.id} synthApi={instrument} />
+ 
+      );
+    });
+
+
+
     return (
       <div className="session-container">
-        <h1>{this.state.name} - {this.state.instrument.name}</h1>
-        {this.state.instrument.name === "Bass Synth" ? <BassSynth synthApi={this.state.instrument} /> : <DosSynth synthApi={this.state.instrument} />}
+        <h1>{this.state.sessionName}</h1>
+        {instruments}
+        
       </div>
     );
   }

@@ -15,9 +15,9 @@ import "./App.scss";
 
 export default class App extends React.Component {
   state = {
-    currentUser: {},
     users: [],
     userSessions: [],
+    currentUser: {},
   };
 
   componentDidMount() {
@@ -46,10 +46,12 @@ export default class App extends React.Component {
           );
           this.setState({
             currentUser: thisUser,
-            userSessions: thisUser.attributes.sessions
+            userSessions: thisUser.attributes.user_sessions
           });
         });
       });
+
+      
   };
 
   clearUser = () => {
@@ -138,6 +140,7 @@ export default class App extends React.Component {
             {this.state.userSessions === 0 ? null : (
               <Route
                 path={`/sessions/:sessionsId`}
+                currentUser={this.state.currentUser}
                 render={routerProps => <Session {...routerProps} />}
               />
             )}
