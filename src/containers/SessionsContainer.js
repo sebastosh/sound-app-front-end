@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { Component } from "react";
-// import Session from '../components/Session'
+
 
 export class SessionsContainer extends Component {
 

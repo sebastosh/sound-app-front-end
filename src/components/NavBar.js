@@ -1,17 +1,15 @@
 import React, { Component } from "react";
 import {
   BrowserRouter as Router,
-  Route,
   NavLink,
   withRouter
 } from "react-router-dom";
 import NewSessionForm from "./NewSessionForm";
-// import Session from "./Session";
+
 
 export class NavBar extends Component {
   state = {
     newClick: false,
-    help: false
   };
 
   resetState = () => {
@@ -21,10 +19,7 @@ export class NavBar extends Component {
     this.setState({ newClick: !this.state.newClick });
   };
 
-  showHelp = e => {
-    console.log("e: ", e);
-    this.setState({ help: !this.state.help });
-  };
+
 
   render() {
     return (

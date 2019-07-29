@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
-import ScorePlot from './ScorePlot'
-import PlayButton from './PlayButton'
-import ReactDOM from "react-dom";
+import Grid from './Grid'
+import PlayTransport from './PlayTransport'
 import Tone from "tone";
 
-class MusicBox extends Component {
+class StepPlay extends Component {
     state = {
       index: 0
     }
   
     constructor (props) {
       super(props)
+
+    //   const drums = [
+    //    'Open' new Tone.MembraneSynth().toMaster();,
+    //    'Closed' new Tone.MembraneSynth().toMaster();,
+    //   'Clap'  new Tone.MembraneSynth().toMaster();,
+    //   'Kick': new Tone.MembraneSynth().toMaster();,
+    // ]
+
       const keys = new Tone.Players({
         'A': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/A1.[mp3|ogg]',
         'C#': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/Cs2.[mp3|ogg]',
@@ -19,6 +26,7 @@ class MusicBox extends Component {
       }, {
         fadeOut: '64n'
       }).toMaster()
+      
       const noteNames = 'F# E C# A'.split(' ')
       this.loop = new Tone.Sequence((time, x) => {
         for (let y = 0; y < noteNames.length; y++) {
@@ -27,25 +35,33 @@ class MusicBox extends Component {
           }
         }
         this.setState({index: x})
-      }, [...new Array(16)].map((_, i) => i), '16n')
+      }, [...new Array(16)].map((_, i) => i), '8n')
       Tone.Transport.start()
     }
   
     render () {
       return (
         <div className="grid">
-          <ScorePlot
+          <Grid
               width={this.props.data[0].length}
               height={this.props.data.length}
               data={this.props.data}
               index={this.state.index}
           />
-          <PlayButton loop={this.loop} />
+          <PlayTransport loop={this.loop} />
+          <span
+               role="img"
+               aria-label="cross mark"
+               className="save-synth"
+               onClick={this.props.saveSynth}
+             >
+               💾
+             </span>
         </div>
       )
     }
   }
 
-export default MusicBox
+export default StepPlay
 
 

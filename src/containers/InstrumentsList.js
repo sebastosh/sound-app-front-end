@@ -20,7 +20,7 @@ pickInstrument = e => {
 
     return (
       <div id={this.props.instrument.id} className={this.state.clicked ? "instrument-pick": "instrument"} onClick={this.pickInstrument}>
-        {this.props.instrument.attributes.name}
+        {this.props.instrument.attributes.instrument_type}
         
       
       </div>

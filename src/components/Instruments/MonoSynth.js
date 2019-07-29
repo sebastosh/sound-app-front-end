@@ -5,51 +5,45 @@ import Key from "./Piano/Key";
 import Octaves from "./Piano/Octaves";
 import ReactDOM from "react-dom";
 
-export class Keys extends Component {
+export class MonoSynth extends Component {
   constructor(props) {
     super(props);
     this.state = {
       firstPressed: false,
       gain: 0.4,
       octave: 3,
-      name: "",
+      synthName: "",
+      synthType: "",
       settings: {
-          vibratoAmount: 0.5,
-          vibratoRate: 5,
-          harmonicity: 1.5,
-          voice0Volume: -10,
-          voice0Portamento: 0,
-          voice0OscillatorType: "sine",
-          voice0FilterEnvelopeAttack: 0.01,
-          voice0FilterEnvelopeDecay: 0,
-          voice0FilterEnvelopeSustain: 1,
-          voice0FilterEnvelopeRelease: 0.5,
-          voice0EnvelopeAttack: 0.01,
-          voice0EnvelopeDecay: 0,
-          voice0EnvelopeSustain: 1,
-          voice0EnvelopeRelease: 0.5,
-          voice1Volume: -10,
-          voice1Portamento: 0,
-          voice1OscillatorType: "sine",
-          voice1FilterEnvelopeAttack: 0.01,
-          voice1FilterEnvelopeDecay: 0,
-          voice1FilterEnvelopeSustain: 1,
-          voice1FilterEnvelopeRelease: 0.5,
-          voice1EnvelopeAttack: 0.01,
-          voice1EnvelopeDecay: 0,
-          voice1EnvelopeSustain: 1,
-          voice1EnvelopeRelease: 0.5
+        frequency : "C4" ,
+        detune : 0 ,
+        oscillatorType: "sine",
+          filterQ: 6,
+          filterType: "lowpass",
+          filterRolloff: -24,
+          envelopeAttack: 0.001,
+          envelopeDecay: 0.1,
+          envelopeSustain: 0.9,
+          envelopeRelease: 1,
+          filterEnvelopeAttack: 0.06,
+          filterEnvelopeDecay: 0.2,
+          filterEnvelopeSustain: 0.5,
+          filterEnvelopeRelease: 1,
+          filterEnvelopeBaseFrequency : 200 ,
+          filterEnvelopeOctaves : 7 ,
+          filterEnvelopeExponent : 2
       }
     };
 
     this.gain = new Tone.Gain(0.1).toMaster();
-    this.synth = new Tone.DuoSynth().connect(this.gain);
+    this.MonoSynth = new Tone.MonoSynth().connect(this.gain);
 
     // bindings
     this.handleGain = this.handleGain.bind(this);
-    this.handleVibrato = this.handleVibrato.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.handleEnvelope = this.handleEnvelope.bind(this);
+    this.handleFilterEnvelope = this.handleFilterEnvelope.bind(this);
+    
 
     this.onDownKey = this.onDownKey.bind(this);
     this.onUpKey = this.onUpKey.bind(this);
@@ -64,82 +58,81 @@ export class Keys extends Component {
   }
 
   componentWillReceiveProps(props) {
-      if (props.synthApi.settings === null) { console.log('no settings');} else
-      {this.setState({ name: props.synthApi.name,
-      settings: props.synthApi.settings });}
-    
+    this.setState({
+      synthType: props.synthApi.instrument_type,
+      synthName: props.synthApi.name
+    });
+
+    if (props.synthApi.settings === null) {
+      console.log("no settings");
+    } else {
+      this.setState({
+        settings: props.synthApi.settings
+      });
+    }
   }
 
   handleGain = e => {
     this.gain.gain.value = e;
   };
 
-  handleVibrato = e => {
-
-    this.synth.vibratoAmount.value = e[0];    
-    this.synth.vibratoRate.value = e[1];   
-    this.synth.harmonicity.value = e[2];
-   
-    this.setState({
-      settings: Object.assign({}, this.state.settings, {
-        vibratoAmount: e[0],
-        vibratoRate: e[1],
-        harmonicity: e[2]
-      })
-    });
-  };
-
   handleFilter = e => {
 
-    this.synth.voice0.filterEnvelope.attack = e[0];
-    this.synth.voice0.filterEnvelope.decay = e[1];
-    this.synth.voice0.filterEnvelope.sustain = e[2];
-    this.synth.voice0.filterEnvelope.release = e[3];
-
-    this.synth.voice1.filterEnvelope.attack = e[0];
-    this.synth.voice1.filterEnvelope.decay = e[1];
-    this.synth.voice1.filterEnvelope.sustain = e[2];
-    this.synth.voice1.filterEnvelope.release = e[3];
-
-    this.setState({
-      settings: Object.assign({}, this.state.settings, {
-        voice0FilterEnvelopeAttack: e[0],
-        voice0FilterEnvelopeDecay: e[1],
-        voice0FilterEnvelopeSustain: e[2],
-        voice0FilterEnvelopeRelease: e[3],
-        voice1FilterEnvelopeAttack: e[0],
-        voice1FilterEnvelopeDecay: e[1],
-        voice1FilterEnvelopeSustain: e[2],
-        voice1FilterEnvelopeRelease: e[3]
-      })
-    });
+    // this.MonoSynth.filter.Q.value = e[0];    
+    // this.MonoSynth.filterType.value = e[1];   
+    // this.MonoSynth.filter.rolloff.value = e[2];
+   
+    // this.setState({
+    //   settings: Object.assign({}, this.state.settings, {
+    //     filterQ: e[0],
+    //     // filterType: e[1],
+    //     filterRolloff: e[2],
+    //   })
+    // });
   };
+
 
   handleEnvelope = e => {
  
-    this.synth.voice0.envelope.attack = e[0];
-    this.synth.voice0.envelope.decay = e[1];
-    this.synth.voice0.envelope.sustain = e[2];
-    this.synth.voice0.envelope.release = e[3];
+    this.MonoSynth.envelope.attack = e[0];
+    this.MonoSynth.envelope.decay = e[1];
+    this.MonoSynth.envelope.sustain = e[2];
+    this.MonoSynth.envelope.release = e[3];
 
-    this.synth.voice1.envelope.attack = e[0];
-    this.synth.voice1.envelope.decay = e[1];
-    this.synth.voice1.envelope.sustain = e[2];
-    this.synth.voice1.envelope.release = e[3];
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
-        voice0EnvelopeAttack: e[0],
-        voice0EnvelopeDecay: e[1],
-        voice0EnvelopeSustain: e[2],
-        voice0EnvelopeRelease: e[3],
-        voice1EnvelopeAttack: e[0],
-        voice1EnvelopeDecay: e[1],
-        voice1EnvelopeSustain: e[2],
-        voice1EnvelopeRelease: e[3]
+        envelopeAttack: e[0],
+        envelopeDecay: e[1],
+        envelopeSustain: e[2],
+        envelopeRelease: e[3]
       })
     });
   };
+
+  handleFilterEnvelope = e => {
+
+    this.MonoSynth.filterEnvelope.attack = e[0]
+    this.MonoSynth.filterEnvelope.decay = e[1]
+    this.MonoSynth.filterEnvelope.sustain = e[2]
+    this.MonoSynth.filterEnvelope.release = e[3]
+    this.MonoSynth.filterEnvelope.baseFrequency = e[4] 
+    this.MonoSynth.filterEnvelope.octaves = e[5]
+    this.MonoSynth.filterEnvelope.exponent = e[6]
+
+    this.setState({
+      settings: Object.assign({}, this.state.settings, { 
+        filterEnvelopeAttack: e[0],
+        filterEnvelopeDecay: e[1],
+        filterEnvelopeSustain: e[2],
+        filterEnvelopeRelease: e[3],
+        filterEnvelopeBaseFrequency: e[4],
+        filterEnvelopeOctaves: e[5],
+        filterEnvelopeExponent: e[6]
+      })
+    });
+  };
+
 
   handleClickOctave(action) {
     switch (action) {
@@ -156,11 +149,11 @@ export class Keys extends Component {
   }
 
   onDownKey(note) {
-    this.synth.triggerAttack(note);
+    this.MonoSynth.triggerAttack(note);
   }
 
   onUpKey(note) {
-    this.synth.triggerRelease();
+    this.MonoSynth.triggerRelease();
   }
 
   onKeyPressed = e => {
@@ -208,7 +201,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
     }
 
     if (!this.state.firstPressed) {
-      this.synth.triggerAttack(`${pressedNote}${this.state.octave}`);
+      this.MonoSynth.triggerAttack(`${pressedNote}${this.state.octave}`);
       this.setState({ firstPressed: !this.state.firstPressed });
     }
   }
@@ -216,7 +209,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
 
   onKeyLifted = e => {
  
-    this.synth.triggerRelease();
+    this.MonoSynth.triggerRelease();
     this.setState({ firstPressed: !this.state.firstPressed });
   };
 
@@ -246,8 +239,10 @@ if ( keyBoardKeys.includes(keyNote) ) {
   render() {
 
     return (
+      <div>
+      <div className="synth-title" >{this.state.synthName}</div>
       <div
-        className="duo-synth"
+        className="synth"
         tabIndex={1}
         ref="divFocus"
         onKeyPress={this.onKeyPressed}
@@ -261,54 +256,58 @@ if ( keyBoardKeys.includes(keyNote) ) {
         <div className="handler">
           <Multislider
             size={[100, 100]}
-            numberOfSliders="3"
+            numberOfSliders="2"
             min="0"
             max="10"
             candycane="3"
             values={[
-              this.state.settings.vibratoAmount,
-              this.state.settings.vibratoRate,
-              this.state.settings.harmonicity
-            ]}
-            onChange={this.handleVibrato}
-          />
-          Vibrato
-        </div>
-
-        <div className="handler">
-          <Multislider
-            size={[100, 100]}
-            numberOfSliders="3"
-            min="0"
-            max="10"
-            candycane="3"
-            values={[
-              this.state.settings.voice0FilterEnvelopeAttack,
-              this.state.settings.voice0FilterEnvelopeDecay,
-              this.state.settings.voice0FilterEnvelopeSustain,
-              this.state.settings.voice0FilterEnvelopeRelease
+              this.state.settings.filterQ,
+              this.state.settings.filterRolloff
             ]}
             onChange={this.handleFilter}
           />
-          Filter Envelope
+          Filter
         </div>
+
+        <div className="handler">Add Filter Type</div>
 
         <div className="handler">
           <Multislider
             size={[100, 100]}
-            numberOfSliders="4"
+            numberOfSliders="3"
             min="0"
             max="10"
-            candycane="4"
+            candycane="3"
             values={[
-              this.state.settings.voice0EnvelopeAttack,
-              this.state.settings.voice0EnvelopeDecay,
-              this.state.settings.voice0EnvelopeSustain,
-              this.state.settings.voice0EnvelopeRelease
+              this.state.settings.envelopeAttack,
+              this.state.settings.envelopeDecay,
+              this.state.settings.envelopeSustain,
+              this.state.settings.envelopeRelease
             ]}
             onChange={this.handleEnvelope}
           />
           Envelope
+        </div>
+
+        <div className="handler">
+          <Multislider
+            size={[100, 100]}
+            numberOfSliders="7"
+            min="0"
+            max="10"
+            candycane="4"
+            values={[
+              this.state.settings.filterEnvelopeAttack,
+              this.state.settings.filterEnvelopeDecay,
+              this.state.settings.filterEnvelopeSustain,
+              this.state.settings.filterEnvelopeRelease,
+              this.state.settings.filterEnvelopeBaseFrequency,
+              this.state.settings.filterEnvelopeOctaves,
+              this.state.settings.filterEnvelopeExponent
+            ]}
+            onChange={this.handleFilterEnvelope}
+          />
+          Filter Envelope
         </div>
         <div className="Keys">
           <Key
@@ -397,8 +396,9 @@ if ( keyBoardKeys.includes(keyNote) ) {
           💾
         </span>
       </div>
+      </div>
     );
   }
 }
 
-export default Keys;
+export default MonoSynth;

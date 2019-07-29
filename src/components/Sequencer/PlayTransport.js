@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 
-class PlayButton extends React.Component {
+class PlayButton extends Component {
   state = {
     isPlaying: false
   }
