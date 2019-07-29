@@ -204,3 +204,24 @@ select {
   width: 250px;
   border: 1px dashed;
 }
+
+.grid {
+  border: 6px solid gray; }
+
+.table {
+  border: 4px solid blueviolet; }
+
+.tbody {
+  border: 3px solid orange; }
+
+.key-y {
+  border: 6px solid gainsboro; }
+
+.key-x {
+  width: 5%;
+  display: inline-block;
+  border: 1px solid forestgreen; }
+
+.sequencer-box{
+  width: 100%;
+}

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import Tone from "tone";
-import { Dial, Multislider } from "react-nexusui";
+import { Dial, Multislider, Sequencer } from "react-nexusui";
+import Nexus from "nexusui"
 import Key from "./Piano/Key";
 import Octaves from "./Piano/Octaves";
 import ReactDOM from "react-dom";
+import StepSequencer from "../Sequencer/StepSequencer";
 
 export class Keys extends Component {
   constructor(props) {
@@ -21,10 +23,15 @@ export class Keys extends Component {
     this.gain = new Tone.Gain(0.4).toMaster();
     this.synth = new Tone.Synth().connect(this.gain);
 
+
     // bindings
     this.onDownKey = this.onDownKey.bind(this);
     this.onUpKey = this.onUpKey.bind(this);
     this.handleClickOctave = this.handleClickOctave.bind(this);
+
+
+    // this.dial = new Nexus.Dial('#dial')
+    
   }
 
   handleGain = e => {
@@ -171,6 +178,7 @@ export class Keys extends Component {
 
   render() {
     return (
+<div>
       <div
         className="synth"
         tabIndex={1}
@@ -178,6 +186,7 @@ export class Keys extends Component {
         onKeyPress={this.onKeyPressed}
         onKeyUp={this.onKeyLifted}
       >
+      {/* <div id="dial"></div> */}
         <div className="handler">
           <Dial value="0.4" onChange={this.handleGain} />
         </div>
@@ -272,13 +281,17 @@ export class Keys extends Component {
             onUp={this.onUpKey}
           />
         </div>
+        
         <Octaves
           octave={this.state.octave}
           handleClick={this.handleClickOctave}
         />
+     
         <span role="img" aria-label="cross mark" className="save-synth" onClick={this.saveSynth}>
         💾
         </span>
+      </div>
+      <StepSequencer />
       </div>
     );
   }

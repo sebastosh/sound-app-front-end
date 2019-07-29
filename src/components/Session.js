@@ -1,6 +1,9 @@
 import React from "react";
 import DosSynth from './Instruments/DosSynth'
 import Synth from './Instruments/Synth'
+// import Tone from "tone";
+// import { Sequencer, Multislider } from "react-nexusui";
+// import ReactDOM from "react-dom";
 
 
 const API = "http://localhost:3000";
