@@ -19,8 +19,6 @@ export class NavBar extends Component {
     this.setState({ newClick: !this.state.newClick });
   };
 
-
-
   render() {
     return (
       <div className="navbar">
@@ -64,7 +62,7 @@ export class NavBar extends Component {
             <div className="nav-rotate">
               <NavLink onClick={this.resetState} to="/signout">
                 <span role="img" aria-label="Sign In">
-                  ⏄
+                ⏅
                 </span>
               </NavLink>
             </div>
@@ -79,7 +77,7 @@ export class NavBar extends Component {
             <div className="nav-rotate">
             <NavLink onClick={this.resetState} to="/signup">
               <span role="img" aria-label="Sign Up">
-                ⏅
+              ⏄
               </span>
             </NavLink>
             </div>

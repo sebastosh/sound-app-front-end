@@ -14,7 +14,6 @@ class Session extends React.Component {
     sessionId: 0,
     currentUser: {},
     sessionInstruments: [],
-    newInstruments: [],
     help: false,
     addNew: false
   };
@@ -39,11 +38,18 @@ class Session extends React.Component {
     this.setState({ help: !this.state.help });
   };
 
-  addNewInstrument = () => {
+  newInstrumentForm = () => {
     this.setState({
       addNew: !this.state.addNew
-    });
-   
+    });   
+  }
+
+  addNewInstrument = instrument => {
+    console.log('instrument: ', instrument);
+    this.setState({
+      sessionInstruments: [instrument, ...this.state.sessionInstruments]
+    })
+
   }
 
   render() {
@@ -62,22 +68,9 @@ class Session extends React.Component {
 
     return (
       <div className="session-container">
-        <h1>{this.state.sessionName}</h1>
+        <h1>{this.state.sessionName}<button onClick={this.newInstrumentForm}>Add Synth</button></h1>
 
-          {/* <Popup
-            trigger={
-              <span className="help-button" role="img" aria-label="Help">
-                ？
-              </span>
-            }
-            position="bottom left"
-          >
-            <img className="key-ui" src="/Piano.png" />
-          </Popup> */}
-          
-        <button onClick={this.addNewInstrument}>Add Synth</button>
-
-        {this.state.addNew ? <NewInstrumentForm />:null}  
+        {this.state.addNew ? <NewInstrumentForm newInstrumentForm={this.newInstrumentForm} addNewInstrument={this.addNewInstrument} sessionName={this.state.sessionName} />:null}  
 
         {sessionInstruments}
       </div>

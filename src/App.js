@@ -46,7 +46,7 @@ export default class App extends React.Component {
           );
           this.setState({
             currentUser: thisUser,
-            userSessions: thisUser.attributes.user_sessions
+            userSessions: thisUser.attributes.sessions
           });
         });
       });
@@ -66,7 +66,7 @@ export default class App extends React.Component {
   addSession = session => {
     console.log("New session", session);
     this.setState({
-      userSessions: [session, ...this.state.userSessions]
+      userSessions: [...this.state.userSessions, session]
     });
   };
 

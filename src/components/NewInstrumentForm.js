@@ -1,17 +1,24 @@
 import React, { Component } from "react";
 import { NavLink, withRouter } from "react-router-dom";
 import InstrumentList from "../containers/InstrumentsList";
+import Select from "react-select";
 
+export class NewInstrumentForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user_id: "",
+      currentUser: {},
+      instruments: [],
+      sessionInstruments: []
+    };
 
-
-export class NewSessionForm extends Component {
-  state = {
-    name: "",
-    user_id: "",
-    currentUser: {},
-    instruments: [],
-    sessionInstruments: []
-  };
+    this.options = [
+      { value: "MonoSynth", label: "Mono Synth" },
+      { value: "DuoSynth", label: "Duo Synth" },
+      { value: "DrumSynth", label: "Drum Synth" }
+    ];
+  }
 
   componentDidMount() {
     fetch("http://localhost:3000/instruments")
@@ -23,110 +30,77 @@ export class NewSessionForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    let newSession = {
-      name: this.state.name
-    };
-    console.log("newSession: ", newSession);
 
-    fetch("http://localhost:3000/sessions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(newSession)
-    })
-      .then(res => res.json())
-      .then(newSession => {
-        console.log(newSession);
-   
-        console.log("this.props.sessionUser.id: ", this.props.sessionUser.id);
-        const newUserSession = {
-          session_id: newSession.id,
-          user_id: this.props.sessionUser.id
-        };
-        console.log("newUserSession: ", newUserSession);
-        fetch("http://localhost:3000/user_sessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          },
-          body: JSON.stringify(newUserSession)
-        })
-          .then(res => res.json())
-          .then(newUserSession => {
-            console.log("newusersession return", newUserSession);
+    this.state.selectedOption.map(instrument => {
+      let newInstrument = {
+        name: `${this.props.sessionName}-${instrument.label}`,
+        instrument_type: instrument.value
+      };
+      console.log("newInstrument: ", newInstrument);
+      fetch("http://localhost:3000/instruments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
+        },
+        body: JSON.stringify(newInstrument)
+      })
+        .then(res => res.json())
+        .then(newInstrumentReturn => {
+          console.log("newInstrumentReturn.id", newInstrumentReturn.id);
+          console.log(
+            "this.props.match.params.sessionsId: ",
+            this.props.match.params.sessionsId
+          );
 
-          });
+          let newSessionInstrument = {
+            name: `${this.props.sessionName}-${instrument.label}`,
+            session_id: this.props.match.params.sessionsId,
+            instrument_id: newInstrumentReturn.id
+          };
+          console.log("newSessionInstrument: ", newSessionInstrument);
 
-        this.props.addSession(newSession);
-        this.props.newClick();
-        // this.props.history.push(`/sessions/${newSession.id}`)
-      });
-  };
-
-  handleChange = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-
-  setInstrument = instrument => {
-    console.log("clicked instrument", instrument.name);
-
-    this.setState({
-      sessionInstruments: [...this.state.sessionInstruments, instrument]
+          fetch("http://localhost:3000/session_instruments", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json"
+            },
+            body: JSON.stringify(newSessionInstrument)
+          })
+            .then(res => res.json())
+            .then(newSessionInstrumentReturn => {
+              console.log(
+                "newSessionInstrumentReturn: ",
+                newSessionInstrumentReturn
+              );
+              this.props.addNewInstrument(newInstrumentReturn);
+              this.props.newInstrumentForm()
+            });
+        });
     });
-   
   };
 
-  removeInstrument = instrument => {
-    console.log("remove instrument: ", instrument);
-
-    const newInstruments = this.state.sessionInstruments.filter(
-      sessionInstrument => sessionInstrument.id !== instrument.id
-    );
-    this.setState({
-      sessionInstruments: newInstruments
-    });
- 
+  handleChange = selectedOption => {
+    this.setState({ selectedOption });
+    console.log(`Option selected:`, selectedOption);
   };
 
   render() {
-    let instruments = this.state.instruments.map(instrument => {
-      return (
-        <InstrumentList
-          key={instrument.id}
-          setInstrument={this.setInstrument}
-          removeInstrument={this.removeInstrument}
-          instrument={instrument}
-        />
-      );
-    });
-
     return (
-      <form className="new-session-form" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          value={this.state.name}
-          placeholder="New Session"
+      <form className="new-instruments-form" onSubmit={this.handleSubmit}>
+        <Select
+          isMulti
+          name="synths"
+          options={this.options}
+          className="basic-multi-select"
           onChange={this.handleChange}
-          name="name"
+          placeholder="Select One or More Synths"
         />
-        {instruments}
-
-        <input type="submit" value="New Session" />
-        <NavLink to="/">
-          <span
-            onClick={this.props.newClick}
-            role="img"
-            aria-label="cross mark"
-          >
-            ❌
-          </span>
-        </NavLink>
+        <input type="submit" value="Add Synths" />
       </form>
     );
   }
 }
 
-export default withRouter(NewSessionForm);
+export default withRouter(NewInstrumentForm);

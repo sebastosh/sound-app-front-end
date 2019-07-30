@@ -1,25 +1,10 @@
 import React, { Component } from "react";
 import { NavLink, withRouter } from "react-router-dom";
-import InstrumentList from "../containers/InstrumentsList";
-
-
 
 export class NewSessionForm extends Component {
   state = {
     name: "",
-    user_id: "",
-    currentUser: {},
-    instruments: [],
-    sessionInstruments: []
   };
-
-  componentDidMount() {
-    fetch("http://localhost:3000/instruments")
-      .then(response => response.json())
-      .then(instrumentData => {
-        this.setState({ instruments: instrumentData.data });
-      });
-  }
 
   handleSubmit = e => {
     e.preventDefault();
@@ -41,7 +26,9 @@ export class NewSessionForm extends Component {
         console.log(newSession);
    
         console.log("this.props.sessionUser.id: ", this.props.sessionUser.id);
+        
         const newUserSession = {
+          name: `${this.props.sessionUser.attributes.username}-${newSession.name}`,
           session_id: newSession.id,
           user_id: this.props.sessionUser.id
         };
@@ -57,12 +44,12 @@ export class NewSessionForm extends Component {
           .then(res => res.json())
           .then(newUserSession => {
             console.log("newusersession return", newUserSession);
-
+            this.props.addSession(newSession);
           });
 
-        this.props.addSession(newSession);
+      
         this.props.newClick();
-        // this.props.history.push(`/sessions/${newSession.id}`)
+        this.props.history.push(`/sessions/${newSession.id}`)
       });
   };
 
@@ -70,38 +57,10 @@ export class NewSessionForm extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  setInstrument = instrument => {
-    console.log("clicked instrument", instrument.name);
 
-    this.setState({
-      sessionInstruments: [...this.state.sessionInstruments, instrument]
-    });
-   
-  };
-
-  removeInstrument = instrument => {
-    console.log("remove instrument: ", instrument);
-
-    const newInstruments = this.state.sessionInstruments.filter(
-      sessionInstrument => sessionInstrument.id !== instrument.id
-    );
-    this.setState({
-      sessionInstruments: newInstruments
-    });
- 
-  };
 
   render() {
-    let instruments = this.state.instruments.map(instrument => {
-      return (
-        <InstrumentList
-          key={instrument.id}
-          setInstrument={this.setInstrument}
-          removeInstrument={this.removeInstrument}
-          instrument={instrument}
-        />
-      );
-    });
+
 
     return (
       <form className="new-session-form" onSubmit={this.handleSubmit}>
@@ -112,7 +71,6 @@ export class NewSessionForm extends Component {
           onChange={this.handleChange}
           name="name"
         />
-        {instruments}
 
         <input type="submit" value="New Session" />
         <NavLink to="/">

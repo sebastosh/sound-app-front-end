@@ -102,6 +102,23 @@ select {
 
 .key-ui {
   background-color: white; }
+  .new-instruments-form {
+    display: inline-flex;
+  }
+
+/* ADD SYNTHS */
+.new-instruments-form {
+  display: grid;
+  width:50%;
+  margin: 0;
+}
+.new-instruments-form input {
+ 
+  font-size: 1em;
+  outline: 5px dashed #013d87;
+  outline-offset: -5px;
+
+ }
 
 
 /* SYNTH */

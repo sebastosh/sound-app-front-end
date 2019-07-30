@@ -233,6 +233,10 @@ if ( keyBoardKeys.includes(keyNote) ) {
       .then(synthObject => {
         console.log("promised synth: ", synthObject);
         console.log("compared this.props.synthApi: ", this.props.synthApi);
+        this.setState({
+          synthType: synthObject.instrument_type,
+          synthName: synthObject.name
+        })
       });
   };
 

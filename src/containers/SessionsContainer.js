@@ -3,18 +3,19 @@ import React, { Component } from "react";
 
 
 export class SessionsContainer extends Component {
+  state = {
+    sessions: []
+  }
 
   render() {
 
     const userSessions = this.props.userSessions;
     console.log('userSessions: ', userSessions);
     
-    let renderSessions = userSessions.map(session => {
+    let renderSessions = userSessions.map(usersession => {
       return (
-        <div className="card" key={session.id}>
-          <Link to={`/sessions/${session.id}`}>{session.id}-{session.session_id}</Link>
-        
-
+        <div className="card" key={usersession.id}>
+          <Link to={`/sessions/${usersession.id}`}>{usersession.name}</Link> 
       </div>
       );
     });
@@ -22,7 +23,6 @@ export class SessionsContainer extends Component {
     return (
       <div>
         {renderSessions}
-      
       </div>
     );
   }
