@@ -16,8 +16,10 @@ import "./App.scss";
 export default class App extends React.Component {
   state = {
     users: [],
-    userSessions: [],
+    sessions: [],
     currentUser: {},
+    currentUserSessions: []
+ 
   };
 
   componentDidMount() {
@@ -33,6 +35,16 @@ export default class App extends React.Component {
       console.log("nobody here");
     }
 
+  
+    fetch("http://localhost:3000/sessions")
+    .then(response => response.json())
+    .then(sessionsData => {
+      console.log('sessionsData: ', sessionsData);
+      this.setState({ sessions: sessionsData.data })
+    
+    });
+  
+
   }
 
   getUser = userData => {
@@ -46,7 +58,7 @@ export default class App extends React.Component {
           );
           this.setState({
             currentUser: thisUser,
-            userSessions: thisUser.attributes.sessions
+            currentUserSessions: thisUser.attributes.sessions
           });
         });
       });
@@ -59,14 +71,14 @@ export default class App extends React.Component {
     console.log("User gone");
     this.setState({
       currentUser: {},
-      userSessions: []
+      currentUserSessions: []
     });
   };
 
   addSession = session => {
     console.log("New session", session);
     this.setState({
-      userSessions: [...this.state.userSessions, session]
+      currentUserSessions: [...this.state.currentUserSessions, session]
     });
   };
 
@@ -124,7 +136,7 @@ export default class App extends React.Component {
               render={routerProps => (
                 <SessionsContainer
                   {...routerProps}
-                  userSessions={this.state.userSessions}
+                  currentUserSessions={this.state.currentUserSessions}
                   currentUser={this.state.currentUser}
                 />
               )}
@@ -137,7 +149,7 @@ export default class App extends React.Component {
             )}
           />
 
-            {this.state.userSessions === 0 ? null : (
+            {this.state.currentUserSessions === 0 ? null : (
               <Route
                 path={`/sessions/:sessionsId`}
                 currentUser={this.state.currentUser}

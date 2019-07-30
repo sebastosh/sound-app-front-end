@@ -22,6 +22,7 @@ class Chat extends React.Component {
 			})
 		})
 		.then(res => {
+			console.log('res: ', res);
 			this.setState({
 				content: "",
 			})
@@ -48,28 +49,26 @@ class Chat extends React.Component {
   };
 
 
-  deleteMessage = (messageId) => {
-  	fetch("http://localhost:3000/chats/delete_message", {
-  		method: "POST",
-  		headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			},
-			body: JSON.stringify({
-				message_id: messageId,
-				chat_id: this.props.chat.id
-			})
-  	})
-  }
+	deleteMessage = (messageId) => {
+		fetch("http://localhost:3000/chats/delete_message", {
+			method: "POST",
+			headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify({
+					message_id: messageId,
+					chat_id: this.props.chat.id
+				})
+		})
+	}
 
 	render(){
-		console.log('Chat state', this.state)
-		console.log('Chat props', this.props)
-
+		
 		let messageComponents = this.props.chat.messages.map(message => {
 			return(
 				<div key={message.id}>
-					{message.username} says: {message.content} 
+					{message.username}: {message.content} 
 					<button onClick={(event) => this.deleteMessage(message.id)}>DELETE</button>
 				</div>
 
@@ -81,10 +80,10 @@ class Chat extends React.Component {
           channel={{ channel: 'ChatChannel', chat_id: this.props.chat.id }}
           onReceived={this.handleSocketResponse}
         />
-				<h1>{this.props.chat.name}</h1>
+				<h3>Session - Chat</h3>
 				{messageComponents}
 				<form onSubmit={this.sendMesssage} >
-				<input type="text" onChange={this.handleChange} name="content"/>
+				<input type="text" value={this.state.content} onChange={this.handleChange} name="content"/>
 				</form>
 				
 				

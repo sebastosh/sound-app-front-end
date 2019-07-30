@@ -9,7 +9,7 @@ export class SessionsContainer extends Component {
 
   render() {
 
-    const userSessions = this.props.userSessions;
+    const userSessions = this.props.currentUserSessions;
     console.log('userSessions: ', userSessions);
     
     let renderSessions = userSessions.map(usersession => {
