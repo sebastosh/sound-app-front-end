@@ -9,6 +9,7 @@ class Chat extends React.Component {
 	}
 
 	sendMesssage = (event) => {
+		event.preventDefault()
 		fetch(`http://localhost:3000/chats/${this.props.chat.id}/add_message`, {
 			method: "POST",
 			headers: {
@@ -17,7 +18,7 @@ class Chat extends React.Component {
 			},
 			body: JSON.stringify({
 				content: this.state.content,
-				user_id: 1
+				user_id: this.props.currentUser.id
 			})
 		})
 		.then(res => {
@@ -27,10 +28,9 @@ class Chat extends React.Component {
 		})
 	}
 
-	handleChange = (event) => {
-		this.setState({
-			content: event.target.value
-		})
+	handleChange = (e) => {
+		console.log('e: ', e);
+		this.setState({ [e.target.name]: e.target.value });
 	}
 
 	handleSocketResponse = data => {
@@ -63,6 +63,9 @@ class Chat extends React.Component {
   }
 
 	render(){
+		console.log('Chat state', this.state)
+		console.log('Chat props', this.props)
+
 		let messageComponents = this.props.chat.messages.map(message => {
 			return(
 				<div key={message.id}>
@@ -79,10 +82,13 @@ class Chat extends React.Component {
           onReceived={this.handleSocketResponse}
         />
 				<h1>{this.props.chat.name}</h1>
-				<textarea onChange={this.handleChange}/>
-				<button onClick={this.sendMesssage} >Enter</button>
 				{messageComponents}
-				<button onClick={this.props.leaveRoom}>Go Back</button>
+				<form onSubmit={this.sendMesssage} >
+				<input type="text" onChange={this.handleChange} name="content"/>
+				</form>
+				
+				
+				<button onClick={this.props.leaveChat}>Go Back</button>
 			</div>
 		)
 	}

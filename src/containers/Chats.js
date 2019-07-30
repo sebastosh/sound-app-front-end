@@ -3,7 +3,7 @@ import ChatList from '../components/ChatList'
 import Chat from '../components/Chat'
 
 
-class App extends Component {
+class Chats extends Component {
 
 	state = {
 		chats: [],
@@ -98,13 +98,14 @@ class App extends Component {
 
 
 	render() {
-		console.log(this.state)
+		console.log('Chats state', this.state)
+		console.log('Chats props', this.props)
 		return (
 
 			
 			<div className="chats">
-<h1>WAHT UP</h1>
-				{this.state.openChat ? <Chat removeMessage={this.removeMessage} addMessage={this.addMessage} leaveChat={this.leaveChat} chat={this.state.openChat}/> : <ChatList chats={this.state.chats} selectChat={this.selectChat}/>}
+<h1>CHAT HI!</h1>
+				{this.state.openChat ? <Chat removeMessage={this.removeMessage} addMessage={this.addMessage} leaveChat={this.leaveChat} chat={this.state.openChat} currentUser={this.props.currentUser}/> : <ChatList chats={this.state.chats} selectChat={this.selectChat}/>}
 				
 				{!this.state.openChat ? <form onSubmit={this.createChat} ><input placeholder="create a chat" onChange={this.handleChange}/></form> : null}
 			</div>
@@ -112,4 +113,4 @@ class App extends Component {
 	}
 }
 
-export default App;
+export default Chats;

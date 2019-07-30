@@ -49,14 +49,7 @@ class StepPlay extends Component {
               index={this.state.index}
           />
           <PlayTransport loop={this.loop} />
-          <span
-               role="img"
-               aria-label="cross mark"
-               className="save-synth"
-               onClick={this.props.saveSynth}
-             >
-               💾
-             </span>
+
         </div>
       )
     }

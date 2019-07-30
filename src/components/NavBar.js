@@ -27,13 +27,6 @@ export class NavBar extends Component {
             🎛
           </span>
         </NavLink>
-        {localStorage.token ? (
-          <NavLink to="/chats">
-            <span role="img" aria-label="chat">
-              💬
-            </span>
-          </NavLink>
-        ) : null}
         {localStorage.token && !this.state.newClick ? (
           <span className="newButton" onClick={this.newSessionClick}>
             🎹

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import StepPlay from '../Sequencer/StepPlay'
+import StepPlay from './Sequencer/StepPlay'
 
 export class StepSequencer extends Component {
    state= {
@@ -19,9 +19,7 @@ export class StepSequencer extends Component {
           synthName: props.synthApi.name
         });
     
-        if (props.synthApi.settings === null) {
-          console.log("no settings");
-        } else {
+        if (props.synthApi.settings !== null) {
           this.setState({
             musicData: props.synthApi.settings
           });
@@ -70,9 +68,16 @@ export class StepSequencer extends Component {
 
     render() {
         return (
-            <div><div className="synth-title">{this.state.synthName}</div>
+            <div><div className="synth-title">{this.state.synthName}          <span
+            role="img"
+            aria-label="Save Synth"
+            className="save-synth"
+            onClick={this.saveSynth}
+          >
+            💾
+          </span></div>
 
-        <StepPlay data={this.state.musicData} saveSynth={this.saveSynth}/>
+        <StepPlay data={this.state.musicData} />
         </div>
         )
     }

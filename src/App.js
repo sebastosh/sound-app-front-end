@@ -141,7 +141,7 @@ export default class App extends React.Component {
               <Route
                 path={`/sessions/:sessionsId`}
                 currentUser={this.state.currentUser}
-                render={routerProps => <Session {...routerProps} />}
+                render={routerProps => <Session {...routerProps} currentUser={this.state.currentUser}/>}
               />
             )}
           </div>

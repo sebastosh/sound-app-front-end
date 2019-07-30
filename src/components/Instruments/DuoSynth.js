@@ -70,9 +70,7 @@ export class DuoSynth extends Component {
       synthName: props.synthApi.name
     });
 
-    if (props.synthApi.settings === null) {
-      console.log("no settings");
-    } else {
+    if (props.synthApi.settings !== null) {
       this.setState({
         settings: props.synthApi.settings
       });
@@ -262,7 +260,17 @@ export class DuoSynth extends Component {
   render() {
     return (
       <div>
-        <div className="synth-title">{this.state.synthName}</div>
+        <div className="synth-title">
+          {this.state.synthName}
+          <span
+            role="img"
+            aria-label="Save Synth"
+            className="save-synth"
+            onClick={this.saveSynth}
+          >
+            💾
+          </span>
+        </div>
 
         <div
           className="synth"
@@ -406,14 +414,6 @@ export class DuoSynth extends Component {
             octave={this.state.octave}
             handleClick={this.handleClickOctave}
           />
-          <span
-            role="img"
-            aria-label="cross mark"
-            className="save-synth"
-            onClick={this.saveSynth}
-          >
-            💾
-          </span>
         </div>
       </div>
     );

@@ -77,7 +77,7 @@ export class NewSessionForm extends Component {
           <span
             onClick={this.props.newClick}
             role="img"
-            aria-label="cross mark"
+            aria-label="Save Synth"
           >
             ❌
           </span>

@@ -1,9 +1,12 @@
 import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Popup from 'reactjs-popup'
 import DuoSynth from "./Instruments/DuoSynth";
 import MonoSynth from "./Instruments/MonoSynth";
 import DrumSynth from "./Instruments/DrumSynth";
 import NewInstrumentForm from './NewInstrumentForm'
+import EditSessionForm from './EditSessionForm'
+import Chats from "../containers/Chats";
 
 
 const API = "http://localhost:3000";
@@ -11,17 +14,17 @@ const API = "http://localhost:3000";
 class Session extends React.Component {
   state = {
     sessionName: "",
-    sessionId: 0,
-    currentUser: {},
     sessionInstruments: [],
     help: false,
-    addNew: false
+    addNew: false,
+    editSessionName: false,
+    openChatBox: false, 
   };
 
   componentDidMount() {
-    const USER = this.props.match.url;
+    const SESSION_URL = this.props.match.url;
 
-    fetch(API + USER)
+    fetch(API + SESSION_URL)
       .then(response => response.json())
       .then(session => {
         console.log("session: ", session);
@@ -52,6 +55,34 @@ class Session extends React.Component {
 
   }
 
+  editSessionName = e => {
+    console.log('e: ', e.target.value);
+    this.setState({editSessionName: !this.state.editSessionName})
+  }
+
+  updateSessionName = (name) => {
+    const SESSION_URL = this.props.match.url;
+
+    fetch(API + SESSION_URL, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({name: name})
+         })
+      .then(res => res.json())
+      .then(synthObject => {
+        this.setState({sessionName: synthObject.name,
+          editSessionName: !this.state.editSessionName})       
+      });
+  }
+
+  openChatBox = () => {
+    this.setState({openChatBox:!this.state.openChatBox})
+  }
+
+
   render() {
     let sessionInstruments = this.state.sessionInstruments.map(instrument => {
       switch (instrument.instrument_type) {
@@ -68,11 +99,16 @@ class Session extends React.Component {
 
     return (
       <div className="session-container">
-        <h1>{this.state.sessionName}<button onClick={this.newInstrumentForm}>Add Synth</button></h1>
+       {this.state.editSessionName ? (<EditSessionForm editSessionName={this.editSessionName} updateSessionName={this.updateSessionName} addNewInstrument={this.addNewInstrument} sessionName={this.state.sessionName} />) : (<div><h1 onClick={this.editSessionName}>{this.state.sessionName}</h1><div className="add-synth" onClick={this.newInstrumentForm}>+</div><span onClick={this.openChatBox} role="img" aria-label="chat">
+              💬
+            </span></div>)}
+        
 
         {this.state.addNew ? <NewInstrumentForm newInstrumentForm={this.newInstrumentForm} addNewInstrument={this.addNewInstrument} sessionName={this.state.sessionName} />:null}  
 
+        {this.state.openChatBox ? <div id="chat-container"><Chats sessionName={this.state.sessionName} currentUser={this.props.currentUser} /></div> : null }
         {sessionInstruments}
+       
       </div>
     );
   }
