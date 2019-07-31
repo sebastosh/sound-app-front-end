@@ -1,6 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Popup from 'reactjs-popup'
+// import { BrowserRouter as Router, Route } from "react-router-dom";
+// import Popup from 'reactjs-popup'
 import DuoSynth from "./Instruments/DuoSynth";
 import MonoSynth from "./Instruments/MonoSynth";
 import DrumSynth from "./Instruments/DrumSynth";

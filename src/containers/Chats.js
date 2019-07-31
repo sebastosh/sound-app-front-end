@@ -47,40 +47,34 @@ class Chats extends Component {
             } else {
               console.log("Chat by session name: ", thisChat);
               this.setState({
-                name: thisChat.name
+                name: thisChat.name,
+                chats: [...this.state.chats, thisChat]
                 // openChat: thisChat
               });
-              this.selectChat(thisChat.id);
+              // this.selectChat(thisChat.id);
+              fetch(`http://localhost:3000/chats/${thisChat.id}/authorize`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json"
+                },
+                body: JSON.stringify({
+                  name: this.state.name
+                })
+              })
+                .then(res => res.json())
+                .then(chat => {
+                  console.log("selected chat: ", chat);
+                  this.setState({
+                    openChat: chat,
+                    name: chat.name
+                  });
+                });
             }
-
-            // this.setState({
-            //   currentUser: thisChat,
-            //   userSessions: thisChat.attributes.sessions
-            // });
           }
         );
       });
   }
-
-  createChat = () => {
-    fetch(`http://localhost:3000/chats`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        name: this.state.name
-      })
-    })
-      .then(res => res.json())
-      .then(chat => {
-        this.setState({
-          name: chat.name,
-          chats: [...this.state.chats, chat]
-        });
-      });
-  };
 
   removeMessage = messageId => {
     let newMessages = this.state.openChat.messages.filter(
@@ -96,38 +90,7 @@ class Chats extends Component {
     });
   };
 
-  selectChat = chatId => {
-    fetch(`http://localhost:3000/chats/${chatId}/authorize`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        name: this.state.name
-      })
-    })
-      .then(res => res.json())
-      .then(chat => {
-        console.log("selected chat: ", chat);
-        this.setState({
-          openChat: chat,
-          name: chat.name
-        });
-      });
-  };
 
-  handleChange = event => {
-    this.setState({
-      name: event.target.value
-    });
-  };
-
-  leaveChat = () => {
-    this.setState({
-      openChat: null
-    });
-  };
 
   addMessage = message => {
     let copyChat = { ...this.state.openChat };
@@ -144,7 +107,6 @@ class Chats extends Component {
           <Chat
             removeMessage={this.removeMessage}
             addMessage={this.addMessage}
-            leaveChat={this.leaveChat}
             chat={this.state.openChat}
             currentUser={this.props.currentUser}
           />
