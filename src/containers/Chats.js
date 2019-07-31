@@ -1,12 +1,19 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
-import Chat from "../components/Chat";
+import { ActionCable } from "react-actioncable-provider";
+import Message from "../components/Message";
 
 class Chats extends Component {
   state = {
     chats: [],
     openChat: null,
-    name: ""
+    openChatMessages: [],
+    name: "",
+    content: ""
+  };
+
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   componentDidMount() {
@@ -39,19 +46,15 @@ class Chats extends Component {
                 .then(chat => {
                   this.setState({
                     name: chat.name,
-                    chats: [...this.state.chats, chat]
-                    // openChat: chat
+                    chats: [...this.state.chats, chat],
+                    openChat: chat,
+                    openChatMessages: chat.messages
                   });
                   console.log("new chat id: ", chat.id);
                 });
             } else {
               console.log("Chat by session name: ", thisChat);
-              this.setState({
-                name: thisChat.name,
-                chats: [...this.state.chats, thisChat]
-                // openChat: thisChat
-              });
-              // this.selectChat(thisChat.id);
+
               fetch(`http://localhost:3000/chats/${thisChat.id}/authorize`, {
                 method: "POST",
                 headers: {
@@ -67,6 +70,7 @@ class Chats extends Component {
                   console.log("selected chat: ", chat);
                   this.setState({
                     openChat: chat,
+                    openChatMessages: chat.messages,
                     name: chat.name
                   });
                 });
@@ -90,32 +94,109 @@ class Chats extends Component {
     });
   };
 
-
-
   addMessage = message => {
-    let copyChat = { ...this.state.openChat };
-    copyChat.messages.push(message);
-    this.setState({
-      openChat: copyChat
+    if (this.state.openChatMessages.some(chatMessage => chatMessage.id !== message.id)) {
+      this.setState({
+        openChatMessages: [...this.state.openChatMessages, message]
+      });
+    } 
+   
+    
+  };
+
+  // ACTIONCABLE
+  sendMesssage = event => {
+     event.preventDefault();
+    //  if (this.state.openChatMessages.some(chatMessage => chatMessage.id !== message.id)) {
+    //   this.setState({
+    //     openChatMessages: [...this.state.openChatMessages, message]
+    //   });
+    // }
+ 
+
+    // fetch(`http://localhost:3000/chats/${this.state.openChat.id}/add_message`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     content: this.state.content,
+    //     user_id: this.props.currentUser.id
+    //   })
+    // }).then(res => {
+    //   console.log("res: ", res);
+    //   this.setState({
+    //     content: ""
+    //   });
+    // });
+  };
+
+  deleteMessage = messageId => {
+    fetch("http://localhost:3000/chats/delete_message", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        message_id: messageId,
+        chat_id: this.props.chat.id
+      })
     });
   };
 
+  handleSocketResponse = data => {
+    console.log('data: ', data);
+    switch (data.type) {
+      case "ADD_MESSAGE":
+        this.addMessage(data.payload);
+        break;
+      case "DELETE_MESSAGE":
+        this.removeMessage(data.payload.message_id);
+        break;
+      default:
+        console.log(data);
+    }
+  };
+
   render() {
+    function List(messages) {
+      if (!messages) {
+        return <p>Sorry, no chat.</p>;
+      } else {
+        return (
+          <div>
+            {messages.map(message => (
+              <Message key={message.id} message={message} />
+            ))}
+          </div>
+        );
+      }
+    }
+
     return (
       <div className="chats">
-        {this.state.openChat ? (
-          <Chat
-            removeMessage={this.removeMessage}
-            addMessage={this.addMessage}
-            chat={this.state.openChat}
-            currentUser={this.props.currentUser}
-          />
-        ) : null}
-
-        {!this.state.openChat ? (
-          <form onSubmit={this.createChat}>
-            <input placeholder="create a chat" onChange={this.handleChange} />
-          </form>
+        {!!this.state.openChat ? (
+          <div>
+            <ActionCable
+              channel={{
+                channel: "ChatChannel",
+                chat_id: this.state.openChat.id
+              }}
+              onReceived={this.handleSocketResponse}
+            />
+            <h3>{this.state.openChat.name} - Chat</h3>
+            {List(this.state.openChatMessages)}
+            <form onSubmit={this.sendMesssage}>
+              <input
+                type="text"
+                value={this.state.content}
+                onChange={this.handleChange}
+                name="content"
+              />
+            </form>
+          </div>
         ) : null}
       </div>
     );

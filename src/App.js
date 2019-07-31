@@ -19,7 +19,6 @@ export default class App extends React.Component {
     sessions: [],
     currentUser: {},
     currentUserSessions: []
- 
   };
 
   componentDidMount() {
@@ -35,16 +34,11 @@ export default class App extends React.Component {
       console.log("nobody here");
     }
 
-  
     fetch("http://localhost:3000/sessions")
-    .then(response => response.json())
-    .then(sessionsData => {
-      console.log('sessionsData: ', sessionsData);
-      this.setState({ sessions: sessionsData.data })
-    
-    });
-  
-
+      .then(response => response.json())
+      .then(sessionsData => {
+        this.setState({ sessions: sessionsData.data });
+      });
   }
 
   getUser = userData => {
@@ -62,8 +56,6 @@ export default class App extends React.Component {
           });
         });
       });
-
-      
   };
 
   clearUser = () => {
@@ -86,8 +78,14 @@ export default class App extends React.Component {
     return (
       <React.Fragment>
         <Router>
-          <NavBar routerprops={this.routerProps} appState={this.state} addSession={this.addSession} getUser={this.getUser} sessionUser={this.state.currentUser}/>
-          
+          <NavBar
+            routerprops={this.routerProps}
+            appState={this.state}
+            addSession={this.addSession}
+            getUser={this.getUser}
+            sessionUser={this.state.currentUser}
+          />
+
           <Route
             path="/login"
             render={routerProps => (
@@ -141,19 +139,24 @@ export default class App extends React.Component {
                 />
               )}
             />
-            
-             <Route
-            path="/chats"
-            render={routerProps => (
-              <Chats {...routerProps} currentUser={this.state.currentUser} />
-            )}
-          />
+
+            <Route
+              path="/chats"
+              render={routerProps => (
+                <Chats {...routerProps} currentUser={this.state.currentUser} />
+              )}
+            />
 
             {this.state.currentUserSessions === 0 ? null : (
               <Route
                 path={`/sessions/:sessionsId`}
                 currentUser={this.state.currentUser}
-                render={routerProps => <Session {...routerProps} currentUser={this.state.currentUser}/>}
+                render={routerProps => (
+                  <Session
+                    {...routerProps}
+                    currentUser={this.state.currentUser}
+                  />
+                )}
               />
             )}
           </div>

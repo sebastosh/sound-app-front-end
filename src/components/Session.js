@@ -27,8 +27,7 @@ class Session extends React.Component {
     fetch(API + SESSION_URL)
       .then(response => response.json())
       .then(session => {
-        console.log("session: ", session);
-
+       
         this.setState({
           sessionName: session.data.attributes.name,
           sessionInstruments: session.data.attributes.instruments
@@ -37,7 +36,6 @@ class Session extends React.Component {
   }
 
   showHelp = e => {
-    console.log("e: ", e);
     this.setState({ help: !this.state.help });
   };
 

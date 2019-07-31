@@ -85,9 +85,6 @@ class Chat extends React.Component {
 				<form onSubmit={this.sendMesssage} >
 				<input type="text" value={this.state.content} onChange={this.handleChange} name="content"/>
 				</form>
-				
-				
-				<button onClick={this.props.leaveChat}>Go Back</button>
 			</div>
 		)
 	}
