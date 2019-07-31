@@ -8,26 +8,6 @@ class Chat extends React.Component {
 		content: ""
 	}
 
-	sendMesssage = (event) => {
-		event.preventDefault()
-		fetch(`http://localhost:3000/chats/${this.props.chat.id}/add_message`, {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			},
-			body: JSON.stringify({
-				content: this.state.content,
-				user_id: this.props.currentUser.id
-			})
-		})
-		.then(res => {
-			console.log('res: ', res);
-			this.setState({
-				content: "",
-			})
-		})
-	}
 
 	handleChange = (e) => {
 		console.log('e: ', e);
@@ -47,6 +27,27 @@ class Chat extends React.Component {
         console.log(data);
     }
   };
+
+  	sendMesssage = (event) => {
+	event.preventDefault()
+	fetch(`http://localhost:3000/chats/${this.props.chat.id}/add_message`, {
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify({
+			content: this.state.content,
+			user_id: this.props.currentUser.id
+		})
+	})
+	.then(res => {
+		console.log('res: ', res);
+		this.setState({
+			content: "",
+		})
+	})
+}
 
 
 	deleteMessage = (messageId) => {
@@ -87,7 +88,7 @@ class Chat extends React.Component {
 				</form>
 				
 				
-				<button onClick={this.props.leaveChat}>Go Back</button>
+				
 			</div>
 		)
 	}

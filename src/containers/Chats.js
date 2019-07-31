@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
 import Chat from "../components/Chat";
+import { ActionCable } from 'react-actioncable-provider';
+
 
 class Chats extends Component {
   state = {
     chats: [],
     openChat: null,
-    name: ""
+    name: "",
+    content: ""
   };
 
   componentDidMount() {
@@ -90,8 +93,6 @@ class Chats extends Component {
     });
   };
 
-
-
   addMessage = message => {
     let copyChat = { ...this.state.openChat };
     copyChat.messages.push(message);
@@ -100,23 +101,91 @@ class Chats extends Component {
     });
   };
 
+  handleChange = (e) => {
+		console.log('e: ', e);
+		this.setState({ [e.target.name]: e.target.value });
+	}
+
+	handleSocketResponse = data => {
+
+    switch (data.type) {
+      case 'ADD_MESSAGE':
+       		this.props.addMessage(data.payload)
+       		break;
+      case "DELETE_MESSAGE":
+      		this.props.removeMessage(data.payload.message_id)
+       		break;
+      default:
+        console.log(data);
+    }
+  };
+
+  	sendMesssage = (event) => {
+	event.preventDefault()
+	fetch(`http://localhost:3000/chats/${this.props.chat.id}/add_message`, {
+		method: "POST",
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify({
+			content: this.state.content,
+			user_id: this.props.currentUser.id
+		})
+	})
+	.then(res => {
+		console.log('res: ', res);
+		this.setState({
+			content: "",
+		})
+	})
+}
+
+
+	deleteMessage = (messageId) => {
+		fetch("http://localhost:3000/chats/delete_message", {
+			method: "POST",
+			headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify({
+					message_id: messageId,
+					chat_id: this.props.chat.id
+				})
+		})
+	}
+
+
   render() {
+let messageComponents
+    if (!!this.state.openChat) {   
+     messageComponents = this.state.openChat.messages.map(message => {
+        return(
+          <div key={message.id}>
+            {message.username}: {message.content} 
+            <button onClick={(event) => this.deleteMessage(message.id)}>DELETE</button>
+          </div>  
+        )
+      })
+    }
+
     return (
       <div className="chats">
         {this.state.openChat ? (
-          <Chat
-            removeMessage={this.removeMessage}
-            addMessage={this.addMessage}
-            chat={this.state.openChat}
-            currentUser={this.props.currentUser}
-          />
+          <ActionCable
+          channel={{ channel: 'ChatChannel', chat_id: this.state.openChat.id }}
+          onReceived={this.handleSocketResponse}
+        />		
+				{messageComponents}
+				<form onSubmit={this.sendMesssage} >
+				<input type="text" value={this.state.content} onChange={this.handleChange} name="content"/>
+				</form>
         ) : null}
-
-        {!this.state.openChat ? (
-          <form onSubmit={this.createChat}>
-            <input placeholder="create a chat" onChange={this.handleChange} />
-          </form>
-        ) : null}
+      	<form onSubmit={this.sendMesssage} >
+				<input type="text" value={this.state.content} onChange={this.handleChange} name="content"/>
+				</form>
+       
       </div>
     );
   }

@@ -34,6 +34,8 @@ class Session extends React.Component {
           sessionInstruments: session.data.attributes.instruments
         });
       });
+
+      
   }
 
   showHelp = e => {
