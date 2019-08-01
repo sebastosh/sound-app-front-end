@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 // import { motion } from "framer-motion"
 import SessionsContainer from "./containers/SessionsContainer";
-import Session from "./components/Session";
+import Session from "./containers/Session";
 // import SessionChat from "./components/SessionChat";
 import NewSessionForm from "./components/NewSessionForm";
 import NavBar from "./components/NavBar";

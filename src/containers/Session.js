@@ -1,12 +1,13 @@
 import React from "react";
 // import { BrowserRouter as Router, Route } from "react-router-dom";
 // import Popup from 'reactjs-popup'
-import DuoSynth from "./Instruments/DuoSynth";
-import MonoSynth from "./Instruments/MonoSynth";
-import DrumSynth from "./Instruments/DrumSynth";
-import NewInstrumentForm from './NewInstrumentForm'
-import EditSessionForm from './EditSessionForm'
-import Chats from "../containers/Chats";
+import KeyBoard from '../components/Instruments/Piano/KeyBoard';
+import DuoSynth from '../components/Instruments/DuoSynth'
+import MonoSynth from "../components/Instruments/MonoSynth";
+import DrumSynth from "../components/Instruments/DrumSynth";
+import NewInstrumentForm from '../components/NewInstrumentForm'
+import EditSessionForm from '../components/EditSessionForm'
+import Chats from "./Chats";
 
 
 const API = "http://localhost:3000";
@@ -105,6 +106,11 @@ class Session extends React.Component {
         {this.state.addNew ? <NewInstrumentForm newInstrumentForm={this.newInstrumentForm} addNewInstrument={this.addNewInstrument} sessionName={this.state.sessionName} />:null}  
 
         {this.state.openChatBox ? <div id="chat-container"><Chats sessionName={this.state.sessionName} currentUser={this.props.currentUser} /></div> : null }
+        {/* <KeyBoard
+            octave={this.state.octave}
+            onDownKey={this.onDownKey}
+            onUpKey={this.onUpKey}
+          /> */}
         {sessionInstruments}
        
       </div>

@@ -114,7 +114,7 @@ select {
   display: inline-flex;
 }
 
-/* ADD SYNTHS */
+/* FIELDS */
 .new-instruments-form {
   display: grid;
   width: 50%;
@@ -127,13 +127,19 @@ select {
   outline-offset: -5px;
 }
 
+
 /* SYNTH */
 
 .synth-title {
   margin-top: 20px;
-  background-color: #18fced;
-  display: inline-block;
-}
+  display: inline-block; }
+
+.synth-title input {
+  font-size: .9em;
+  outline: 1px solid #013d87;
+  outline-offset: -1px;
+  margin-bottom: 5px; }
+
 
 .synth {
   padding: 1rem;

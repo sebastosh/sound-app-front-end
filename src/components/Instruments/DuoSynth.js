@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Tone from "tone";
+import Nexus from 'nexusui'
 import { 
   Toggle,
   Dial,
@@ -12,9 +13,9 @@ import {
   RadioButton,
   Select,
   Sequencer, } from "react-nexusui";
-import Key from "./Piano/Key";
-import Octaves from "./Piano/Octaves";
+
 import ReactDOM from "react-dom";
+import KeyBoard from "./Piano/KeyBoard";
 
 function TitleAndChildren({ children, title }) {
   return (
@@ -29,6 +30,7 @@ export class DuoSynth extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      instrumentNameToggle: false,
       firstPressed: false,
       gain: 0.4,
       octave: 3,
@@ -80,6 +82,10 @@ export class DuoSynth extends Component {
     this.onKeyPressed = this.onKeyPressed.bind(this);
     this.onKeyLifted = this.onKeyLifted.bind(this);
     this.handleClickOctave = this.handleClickOctave.bind(this);
+  
+    // this.sequencer = new Nexus.Sequencer('#sequencer');
+
+
   }
 
   componentDidMount() {
@@ -97,6 +103,21 @@ export class DuoSynth extends Component {
         settings: props.synthApi.settings
       });
     }
+  }
+
+  instrumentNameToggle = e => {
+    this.setState(
+      { instrumentNameToggle: !this.state.instrumentNameToggle },
+      () => {
+        if (!this.state.instrumentNameToggle) {
+          this.saveSynth();
+        }
+      }
+    );
+  };
+
+  updateInstrumentName = name => { 
+    this.setState({synthName: name.target.value})
   }
 
   handleGain = e => {
@@ -292,7 +313,7 @@ export class DuoSynth extends Component {
 
   saveSynth = () => {
     let synthFromState = {
-      name: this.props.synthApi.name,
+      name: this.state.synthName,
       settings: this.state.settings
     };
 
@@ -315,17 +336,31 @@ export class DuoSynth extends Component {
   render() {
     return (
       <div>
-        <div className="synth-title">
-          {this.state.synthName}
-          <span
-            role="img"
-            aria-label="Save Synth"
-            className="save-synth"
-            onClick={this.saveSynth}
-          >
-            💾
-          </span>
-        </div>
+      {this.state.instrumentNameToggle ? 
+            <div className="synth-title">
+
+            <input
+              ref="divFocus"
+              tabIndex={1}
+              type="text"
+              value={this.state.name}
+              placeholder={this.state.synthName}
+              onBlur={this.instrumentNameToggle}
+              onChange={this.updateInstrumentName}
+              name="name"
+            />
+  
+        </div>: <div onClick={this.instrumentNameToggle} className="synth-title">{this.state.synthName}</div>}
+
+      <span
+          role="img"
+          aria-label="Save Synth"
+          className="save-synth"
+          onClick={this.saveSynth}
+        >
+          💾
+        </span>
+
 
         <div
           className="synth"
@@ -396,84 +431,36 @@ export class DuoSynth extends Component {
               onChange={this.handleEnvelope}
             />
           </TitleAndChildren>
-          <div className="Keys">
-            <Key
-              note={`C${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`Db${this.state.octave}`}
-              keyColor="black"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`D${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`Eb${this.state.octave}`}
-              keyColor="black"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`E${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`F${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`Gb${this.state.octave}`}
-              keyColor="black"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`G${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`Ab${this.state.octave}`}
-              keyColor="black"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`A${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`Bb${this.state.octave}`}
-              keyColor="black"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-            <Key
-              note={`B${this.state.octave}`}
-              keyColor="white"
-              onDown={this.onDownKey}
-              onUp={this.onUpKey}
-            />
-          </div>
-          <Octaves
+          <KeyBoard
             octave={this.state.octave}
-            handleClick={this.handleClickOctave}
+            onDownKey={this.onDownKey}
+            onUpKey={this.onUpKey}
           />
+          {/* <TitleAndChildren title="Sequencer">
+            <Sequencer
+              rows={5}
+              columns={10}
+              size={[400, 200]}
+              onStep={console.warn}
+              onReady={this.sequencer.current = this.sequencer}
+            />
+            <div>
+              <button
+                onClick={() => {
+                  this.sequencer.current.start(500);
+                }}
+              >
+                Play Sequencer
+              </button>
+              <button
+                onClick={() => {
+                  this.sequencer.current.stop(500);
+                }}
+              >
+                Stop Sequencer
+              </button>
+            </div>
+          </TitleAndChildren> */}
         </div>
       </div>
     );
