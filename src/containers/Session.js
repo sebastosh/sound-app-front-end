@@ -9,7 +9,6 @@ import NewInstrumentForm from '../components/NewInstrumentForm'
 import EditSessionForm from '../components/EditSessionForm'
 import Chats from "./Chats";
 
-
 const API = "http://localhost:3000";
 
 class Session extends React.Component {

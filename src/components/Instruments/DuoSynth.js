@@ -432,6 +432,7 @@ export class DuoSynth extends Component {
             />
           </TitleAndChildren>
           <KeyBoard
+            handleClickOctave={this.handleClickOctave}
             octave={this.state.octave}
             onDownKey={this.onDownKey}
             onUpKey={this.onUpKey}

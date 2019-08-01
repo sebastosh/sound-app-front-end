@@ -17,9 +17,9 @@ class StepPlay extends Component {
     //   'Clap'  new Tone.MembraneSynth().toMaster();,
     //   'Kick': new Tone.MembraneSynth().toMaster();,
     // ]
-
+// https://freesound.org/people/waveplay_old/sounds/218279/download/218279__waveplay-old__909-kick-drum.ogg
       const keys = new Tone.Players({
-        'A': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/A1.[mp3|ogg]',
+        'A': 'audio/218279__waveplay-old__909-kick-drum.ogg',
         'C#': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/Cs2.[mp3|ogg]',
         'E': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/E2.[mp3|ogg]',
         'F#': 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/292951/Fs2.[mp3|ogg]'
@@ -31,7 +31,7 @@ class StepPlay extends Component {
       this.loop = new Tone.Sequence((time, x) => {
         for (let y = 0; y < noteNames.length; y++) {
           if (this.props.data[y][x]) {
-            keys.get(noteNames[y]).start(time, 0, '32n', 0)
+            keys.get(noteNames[y]).start(time, 0, '32n')
           }
         }
         this.setState({index: x})

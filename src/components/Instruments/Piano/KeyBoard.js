@@ -83,7 +83,7 @@ export class KeyBoard extends Component {
           </div>
           <Octaves
             octave={this.props.octave}
-            handleClick={this.handleClickOctave}
+            handleClick={this.props.handleClickOctave}
           />
           </div>
         )
