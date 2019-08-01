@@ -16,7 +16,7 @@ export class NewInstrumentForm extends Component {
     this.options = [
       { value: "MonoSynth", label: "Mono Synth" },
       { value: "DuoSynth", label: "Duo Synth" },
-      { value: "DrumSynth", label: "Drum Synth" }
+      // { value: "DrumSynth", label: "Drum Synth" }
     ];
   }
 

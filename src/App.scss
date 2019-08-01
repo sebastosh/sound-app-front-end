@@ -1,33 +1,26 @@
 body {
   font-size: 1.5em;
-}
+margin: 1em;}
 
 .navbar {
   width: 55%;
   font-size: 1.4em;
-  margin: 0.6em 0.4em;
-  outline: 2px dashed;
-  outline-offset: -2px;
 }
 
 .navbar a,
 span {
   margin: 0.2em;
   color: #004eae;
-  text-decoration-line: none;
-}
+  text-decoration-line: none; }
 
 .navuser {
-  outline: 2px dashed;
-  outline-offset: -2px;
-
   position: absolute;
   display: inline-block;
-  right: 0;
-  top: 0;
+  right: .5em;
+  top: .5em;
   padding: 0.6em 0.6em 0.4em 0.4em;
-  background-color: #ffffffd9;
-}
+  background-color: #ffffffd9; }
+
 
 .nav-rotate {
   display: inline-block;

@@ -98,8 +98,8 @@ class Session extends React.Component {
           return <MonoSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
         case "DuoSynth":
           return <DuoSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
-        case "DrumSynth":
-          return <DrumSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
+        // case "DrumSynth":
+        //   return <DrumSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
         default:
           return null;
       }
@@ -114,7 +114,7 @@ class Session extends React.Component {
 
         {this.state.addNew ? <NewInstrumentForm newInstrumentForm={this.newInstrumentForm} addNewInstrument={this.addNewInstrument} sessionName={this.state.sessionName} />:null}  
 
-        {this.state.openChatBox ? <div id="chat-container"><Chats sessionName={this.state.sessionName} currentUser={this.props.currentUser} /></div> : null }
+        {this.state.openChatBox ? <div id="chat-container"><Chats openChatBox={this.openChatBox} sessionName={this.state.sessionName} currentUser={this.props.currentUser} /></div> : null }
         {/* <KeyBoard
             octave={this.state.octave}
             onDownKey={this.onDownKey}

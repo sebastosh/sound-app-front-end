@@ -95,24 +95,28 @@ class Chats extends Component {
   };
 
   addMessage = message => {
-    if (this.state.openChatMessages.some(chatMessage => chatMessage.id !== message.id)) {
+    console.log('function addMessage: ', message);
+    if (
+      this.state.openChatMessages.some(
+        chatMessage => chatMessage.id !== message.id
+      )
+    ) {
       this.setState({
         openChatMessages: [...this.state.openChatMessages, message]
       });
-    } 
-   
-    
+    }
   };
+
 
   // ACTIONCABLE
   sendMesssage = event => {
-     event.preventDefault();
+    event.preventDefault();
+
     //  if (this.state.openChatMessages.some(chatMessage => chatMessage.id !== message.id)) {
     //   this.setState({
     //     openChatMessages: [...this.state.openChatMessages, message]
     //   });
     // }
- 
 
     fetch(`http://localhost:3000/chats/${this.state.openChat.id}/add_message`, {
       method: "POST",
@@ -147,10 +151,20 @@ class Chats extends Component {
   };
 
   handleSocketResponse = data => {
-    console.log('data: ', data);
+    console.log("data: ", data.payload.id);
     switch (data.type) {
       case "ADD_MESSAGE":
-        this.addMessage(data.payload);
+        
+      if (
+          this.state.openChatMessages.find(
+            chatMessage => chatMessage.id !== data.payload.id
+          )
+        ) {console.log("message already in state");
+          
+        } else {
+          this.addMessage(data.payload);
+        }
+
         break;
       case "DELETE_MESSAGE":
         this.removeMessage(data.payload.message_id);
@@ -176,7 +190,7 @@ class Chats extends Component {
     }
 
     return (
-      <div className="chats">
+      <div onBlur={this.props.openChatBox} className="chats">
         {!!this.state.openChat ? (
           <div>
             <ActionCable
