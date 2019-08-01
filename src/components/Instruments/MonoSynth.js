@@ -1,9 +1,29 @@
 import React, { Component } from "react";
 import Tone from "tone";
-import { Dial, Multislider } from "react-nexusui";
+import { 
+  Toggle,
+  Dial,
+  Number,
+  Position,
+  Slider,
+  Envelope,
+  Multislider,
+  Piano,
+  RadioButton,
+  Select,
+  Sequencer, } from "react-nexusui";
 import Key from "./Piano/Key";
 import Octaves from "./Piano/Octaves";
 import ReactDOM from "react-dom";
+
+function TitleAndChildren({ children, title }) {
+  return (
+    <div style={{ margin: 0 }}>
+      <h4 className={"subtitle"}>{title}</h4>
+      {children}
+    </div>
+  );
+}
 
 export class MonoSynth extends Component {
   constructor(props) {
@@ -18,9 +38,6 @@ export class MonoSynth extends Component {
         frequency : "C4" ,
         detune : 0 ,
         oscillatorType: "sine",
-          filterQ: 6,
-          filterType: "lowpass",
-          filterRolloff: -24,
           envelopeAttack: 0.001,
           envelopeDecay: 0.1,
           envelopeSustain: 0.9,
@@ -29,9 +46,6 @@ export class MonoSynth extends Component {
           filterEnvelopeDecay: 0.2,
           filterEnvelopeSustain: 0.5,
           filterEnvelopeRelease: 1,
-          filterEnvelopeBaseFrequency : 200 ,
-          filterEnvelopeOctaves : 7 ,
-          filterEnvelopeExponent : 2
       }
     };
 
@@ -40,11 +54,10 @@ export class MonoSynth extends Component {
 
     // bindings
     this.handleGain = this.handleGain.bind(this);
-    this.handleFilter = this.handleFilter.bind(this);
+    this.handleOscType = this.handleOscType.bind(this);
     this.handleEnvelope = this.handleEnvelope.bind(this);
     this.handleFilterEnvelope = this.handleFilterEnvelope.bind(this);
     
-
     this.onDownKey = this.onDownKey.bind(this);
     this.onUpKey = this.onUpKey.bind(this);
 
@@ -74,20 +87,17 @@ export class MonoSynth extends Component {
     this.gain.gain.value = e;
   };
 
-  handleFilter = e => {
+  handleOscType = e => {
+    console.log('e: ', e.value);
+    this.MonoSynth.oscillator.type = e.value;
 
-    // this.MonoSynth.filter.Q.value = e[0];    
-    // this.MonoSynth.filterType.value = e[1];   
-    // this.MonoSynth.filter.rolloff.value = e[2];
-   
-    // this.setState({
-    //   settings: Object.assign({}, this.state.settings, {
-    //     filterQ: e[0],
-    //     // filterType: e[1],
-    //     filterRolloff: e[2],
-    //   })
-    // });
-  };
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        oscillatorType: e.value
+      })
+    });
+
+  }
 
 
   handleEnvelope = e => {
@@ -108,15 +118,25 @@ export class MonoSynth extends Component {
     });
   };
 
+  handleFilterType = e => {
+    console.log('e: ', e.value);
+    this.MonoSynth.filter.type = e.value;
+
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        filterType: e.value
+      })
+    });
+
+  }
+
   handleFilterEnvelope = e => {
 
     this.MonoSynth.filterEnvelope.attack = e[0]
     this.MonoSynth.filterEnvelope.decay = e[1]
     this.MonoSynth.filterEnvelope.sustain = e[2]
     this.MonoSynth.filterEnvelope.release = e[3]
-    this.MonoSynth.filterEnvelope.baseFrequency = e[4] 
-    this.MonoSynth.filterEnvelope.octaves = e[5]
-    this.MonoSynth.filterEnvelope.exponent = e[6]
+
 
     this.setState({
       settings: Object.assign({}, this.state.settings, { 
@@ -124,13 +144,9 @@ export class MonoSynth extends Component {
         filterEnvelopeDecay: e[1],
         filterEnvelopeSustain: e[2],
         filterEnvelopeRelease: e[3],
-        filterEnvelopeBaseFrequency: e[4],
-        filterEnvelopeOctaves: e[5],
-        filterEnvelopeExponent: e[6]
       })
     });
   };
-
 
   handleClickOctave(action) {
     switch (action) {
@@ -156,11 +172,23 @@ export class MonoSynth extends Component {
 
   onKeyPressed = e => {
 let keyNote = e.key
-let keyBoardKeys = ["z","s","x","d","c","v","g","b","h","n","j","m"]
+let keyBoardKeys = ["z","s","x","d","c","v","g","b","h","n","j","m", ",", "."]
 
 if ( keyBoardKeys.includes(keyNote) ) { 
 
+
+
     let pressedNote;
+
+    if (keyNote === ",") {
+      this.setState({ octave: this.state.octave - 1 });
+      pressedNote = null
+    }
+    if (keyNote === ".") {
+      this.setState({ octave: this.state.octave + 1 });
+      pressedNote = null
+    }
+    
     if (keyNote === "z") {
       pressedNote = "C";
     }
@@ -198,7 +226,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
       pressedNote = "B";
     }
 
-    if (!this.state.firstPressed) {
+    if (!this.state.firstPressed && keyNote !== "," && keyNote !== ".") {
       this.MonoSynth.triggerAttack(`${pressedNote}${this.state.octave}`);
       this.setState({ firstPressed: !this.state.firstPressed });
     }
@@ -206,6 +234,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
   };
 
   onKeyLifted = e => {
+    console.log('e: ', e.key);
  
     this.MonoSynth.triggerRelease();
     this.setState({ firstPressed: !this.state.firstPressed });
@@ -225,7 +254,7 @@ if ( keyBoardKeys.includes(keyNote) ) {
         Accept: "application/json"
       },
       body: JSON.stringify(synthFromState)
-      // body: {"settings": this.state.settings}
+
     })
       .then(res => res.json())
       .then(synthObject => {
@@ -236,6 +265,10 @@ if ( keyBoardKeys.includes(keyNote) ) {
           synthName: synthObject.name
         })
       });
+  };
+
+  consoleUI = e => {
+    console.log("consoleUI", e);
   };
 
   render() {
@@ -257,33 +290,22 @@ if ( keyBoardKeys.includes(keyNote) ) {
         onKeyPress={this.onKeyPressed}
         onKeyUp={this.onKeyLifted}
       >
-        <div className="handler">
+         <TitleAndChildren title="Gain">
           <Dial value="0.4" onChange={this.handleGain} />
-          Gain
-        </div>
+          </TitleAndChildren>
 
-        <div className="handler">
+        <TitleAndChildren title="Oscillator">
+            <Select options={["sine","square","sawtooth","triangle"]} value={"sine"} onChange={this.handleOscType}/>
+          </TitleAndChildren>
+
+          <TitleAndChildren title="Filter">
+            <Select options={["lowpass", "highpass", "bandpass", "lowshelf",  "highshelf", "peaking", "notch", "allpass"]} value={"lowpass"} onChange={this.handleFilterType}/>
+          </TitleAndChildren>
+
+          <TitleAndChildren title="Envelope">
           <Multislider
             size={[100, 100]}
-            numberOfSliders="2"
-            min="0"
-            max="10"
-            candycane="3"
-            values={[
-              this.state.settings.filterQ,
-              this.state.settings.filterRolloff
-            ]}
-            onChange={this.handleFilter}
-          />
-          Filter
-        </div>
-
-        <div className="handler">Add Filter Type</div>
-
-        <div className="handler">
-          <Multislider
-            size={[100, 100]}
-            numberOfSliders="3"
+            numberOfSliders="4"
             min="0"
             max="10"
             candycane="3"
@@ -295,13 +317,12 @@ if ( keyBoardKeys.includes(keyNote) ) {
             ]}
             onChange={this.handleEnvelope}
           />
-          Envelope
-        </div>
+          </TitleAndChildren>
 
-        <div className="handler">
+<TitleAndChildren title="Filter Envelope">
           <Multislider
-            size={[100, 100]}
-            numberOfSliders="7"
+            size={[100, 80]}
+            numberOfSliders="4"
             min="0"
             max="10"
             candycane="4"
@@ -310,14 +331,11 @@ if ( keyBoardKeys.includes(keyNote) ) {
               this.state.settings.filterEnvelopeDecay,
               this.state.settings.filterEnvelopeSustain,
               this.state.settings.filterEnvelopeRelease,
-              this.state.settings.filterEnvelopeBaseFrequency,
-              this.state.settings.filterEnvelopeOctaves,
-              this.state.settings.filterEnvelopeExponent
             ]}
             onChange={this.handleFilterEnvelope}
           />
-          Filter Envelope
-        </div>
+        </TitleAndChildren>
+
         <div className="Keys">
           <Key
             note={`C${this.state.octave}`}

@@ -1,9 +1,29 @@
 import React, { Component } from "react";
 import Tone from "tone";
-import { Dial, Multislider } from "react-nexusui";
+import { 
+  Toggle,
+  Dial,
+  Number,
+  Position,
+  Slider,
+  Envelope,
+  Multislider,
+  Piano,
+  RadioButton,
+  Select,
+  Sequencer, } from "react-nexusui";
 import Key from "./Piano/Key";
 import Octaves from "./Piano/Octaves";
 import ReactDOM from "react-dom";
+
+function TitleAndChildren({ children, title }) {
+  return (
+    <div style={{ margin: 0 }}>
+      <h4 className={"subtitle"}>{title}</h4>
+      {children}
+    </div>
+  );
+}
 
 export class DuoSynth extends Component {
   constructor(props) {
@@ -44,10 +64,12 @@ export class DuoSynth extends Component {
     };
 
     this.gain = new Tone.Gain(0.1).toMaster();
-    this.synth = new Tone.DuoSynth().connect(this.gain);
+    this.DuoSynth = new Tone.DuoSynth().connect(this.gain);
 
     // bindings
     this.handleGain = this.handleGain.bind(this);
+    this.handleOsc1 = this.handleOsc1.bind(this);
+    this.handleOsc2 = this.handleOsc2.bind(this);
     this.handleVibrato = this.handleVibrato.bind(this);
     this.handleFilter = this.handleFilter.bind(this);
     this.handleEnvelope = this.handleEnvelope.bind(this);
@@ -80,11 +102,32 @@ export class DuoSynth extends Component {
   handleGain = e => {
     this.gain.gain.value = e;
   };
+  handleOsc1 = e => {
+    console.log('e: ', e.value);
+    this.DuoSynth.voice0.oscillator.type = e.value;
 
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        voice0OscillatorType: e.value
+      })
+    });
+
+  }
+  handleOsc2 = e => {
+    console.log('e: ', e.value);
+    this.DuoSynth.voice1.oscillator.type = e.value;
+
+    this.setState({
+      settings: Object.assign({}, this.state.settings, {
+        voice1OscillatorType: e.value
+      })
+    });
+
+  }
   handleVibrato = e => {
-    this.synth.vibratoAmount.value = e[0];
-    this.synth.vibratoRate.value = e[1];
-    this.synth.harmonicity.value = e[2];
+    this.DuoSynth.vibratoAmount.value = e[0];
+    this.DuoSynth.vibratoRate.value = e[1];
+    this.DuoSynth.harmonicity.value = e[2];
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
@@ -96,15 +139,15 @@ export class DuoSynth extends Component {
   };
 
   handleFilter = e => {
-    this.synth.voice0.filterEnvelope.attack = e[0];
-    this.synth.voice0.filterEnvelope.decay = e[1];
-    this.synth.voice0.filterEnvelope.sustain = e[2];
-    this.synth.voice0.filterEnvelope.release = e[3];
+    this.DuoSynth.voice0.filterEnvelope.attack = e[0];
+    this.DuoSynth.voice0.filterEnvelope.decay = e[1];
+    this.DuoSynth.voice0.filterEnvelope.sustain = e[2];
+    this.DuoSynth.voice0.filterEnvelope.release = e[3];
 
-    this.synth.voice1.filterEnvelope.attack = e[0];
-    this.synth.voice1.filterEnvelope.decay = e[1];
-    this.synth.voice1.filterEnvelope.sustain = e[2];
-    this.synth.voice1.filterEnvelope.release = e[3];
+    this.DuoSynth.voice1.filterEnvelope.attack = e[0];
+    this.DuoSynth.voice1.filterEnvelope.decay = e[1];
+    this.DuoSynth.voice1.filterEnvelope.sustain = e[2];
+    this.DuoSynth.voice1.filterEnvelope.release = e[3];
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
@@ -121,15 +164,15 @@ export class DuoSynth extends Component {
   };
 
   handleEnvelope = e => {
-    this.synth.voice0.envelope.attack = e[0];
-    this.synth.voice0.envelope.decay = e[1];
-    this.synth.voice0.envelope.sustain = e[2];
-    this.synth.voice0.envelope.release = e[3];
+    this.DuoSynth.voice0.envelope.attack = e[0];
+    this.DuoSynth.voice0.envelope.decay = e[1];
+    this.DuoSynth.voice0.envelope.sustain = e[2];
+    this.DuoSynth.voice0.envelope.release = e[3];
 
-    this.synth.voice1.envelope.attack = e[0];
-    this.synth.voice1.envelope.decay = e[1];
-    this.synth.voice1.envelope.sustain = e[2];
-    this.synth.voice1.envelope.release = e[3];
+    this.DuoSynth.voice1.envelope.attack = e[0];
+    this.DuoSynth.voice1.envelope.decay = e[1];
+    this.DuoSynth.voice1.envelope.sustain = e[2];
+    this.DuoSynth.voice1.envelope.release = e[3];
 
     this.setState({
       settings: Object.assign({}, this.state.settings, {
@@ -160,11 +203,11 @@ export class DuoSynth extends Component {
   }
 
   onDownKey(note) {
-    this.synth.triggerAttack(note);
+    this.DuoSynth.triggerAttack(note);
   }
 
   onUpKey(note) {
-    this.synth.triggerRelease();
+    this.DuoSynth.triggerRelease();
   }
 
   onKeyPressed = e => {
@@ -181,11 +224,23 @@ export class DuoSynth extends Component {
       "h",
       "n",
       "j",
-      "m"
+      "m",
+      ",", 
+      "."
     ];
 
     if (keyBoardKeys.includes(keyNote)) {
       let pressedNote;
+
+      if (keyNote === ",") {
+        this.setState({ octave: this.state.octave - 1 });
+        pressedNote = null
+      }
+      if (keyNote === ".") {
+        this.setState({ octave: this.state.octave + 1 });
+        pressedNote = null
+      }
+      
       if (keyNote === "z") {
         pressedNote = "C";
       }
@@ -223,15 +278,15 @@ export class DuoSynth extends Component {
         pressedNote = "B";
       }
 
-      if (!this.state.firstPressed) {
-        this.synth.triggerAttack(`${pressedNote}${this.state.octave}`);
+      if (!this.state.firstPressed && keyNote !== "," && keyNote !== ".") {
+        this.DuoSynth.triggerAttack(`${pressedNote}${this.state.octave}`);
         this.setState({ firstPressed: !this.state.firstPressed });
       }
     }
   };
 
   onKeyLifted = e => {
-    this.synth.triggerRelease();
+    this.DuoSynth.triggerRelease();
     this.setState({ firstPressed: !this.state.firstPressed });
   };
 
@@ -279,12 +334,19 @@ export class DuoSynth extends Component {
           onKeyPress={this.onKeyPressed}
           onKeyUp={this.onKeyLifted}
         >
-          <div className="handler">
+           <TitleAndChildren title="Gain">
             <Dial value="0.4" onChange={this.handleGain} />
-            Gain
-          </div>
+          </TitleAndChildren>
 
-          <div className="handler">
+          <TitleAndChildren title="Osc 1">
+            <Select options={["sine","square","sawtooth","triangle"]} value={"sine"} onChange={this.handleOsc1}/>
+          </TitleAndChildren>
+
+          <TitleAndChildren title="Osc 2">
+            <Select options={["sine","square","sawtooth","triangle"]} value={"sine"} onChange={this.handleOsc2}/>
+          </TitleAndChildren>
+
+           <TitleAndChildren title="Vibrato">
             <Multislider
               size={[100, 100]}
               numberOfSliders="3"
@@ -298,10 +360,9 @@ export class DuoSynth extends Component {
               ]}
               onChange={this.handleVibrato}
             />
-            Vibrato
-          </div>
+          </TitleAndChildren>
 
-          <div className="handler">
+           <TitleAndChildren title="Filter Env">
             <Multislider
               size={[100, 100]}
               numberOfSliders="3"
@@ -316,10 +377,10 @@ export class DuoSynth extends Component {
               ]}
               onChange={this.handleFilter}
             />
-            Filter Envelope
-          </div>
+            
+          </TitleAndChildren>
 
-          <div className="handler">
+           <TitleAndChildren title="Env ADSR">
             <Multislider
               size={[100, 100]}
               numberOfSliders="4"
@@ -334,8 +395,7 @@ export class DuoSynth extends Component {
               ]}
               onChange={this.handleEnvelope}
             />
-            Envelope
-          </div>
+          </TitleAndChildren>
           <div className="Keys">
             <Key
               note={`C${this.state.octave}`}

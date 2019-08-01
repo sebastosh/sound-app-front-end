@@ -114,22 +114,22 @@ class Chats extends Component {
     // }
  
 
-    // fetch(`http://localhost:3000/chats/${this.state.openChat.id}/add_message`, {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     Accept: "application/json"
-    //   },
-    //   body: JSON.stringify({
-    //     content: this.state.content,
-    //     user_id: this.props.currentUser.id
-    //   })
-    // }).then(res => {
-    //   console.log("res: ", res);
-    //   this.setState({
-    //     content: ""
-    //   });
-    // });
+    fetch(`http://localhost:3000/chats/${this.state.openChat.id}/add_message`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify({
+        content: this.state.content,
+        user_id: this.props.currentUser.id
+      })
+    }).then(res => {
+      console.log("res: ", res);
+      this.setState({
+        content: ""
+      });
+    });
   };
 
   deleteMessage = messageId => {

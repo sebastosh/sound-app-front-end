@@ -97,7 +97,6 @@ export class NewInstrumentForm extends Component {
           onChange={this.handleChange}
           placeholder="Select One or More Synths"
         />
-        <input type="submit" value="Add Synths" />
       </form>
     );
   }
