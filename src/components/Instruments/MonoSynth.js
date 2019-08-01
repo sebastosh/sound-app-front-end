@@ -25,6 +25,8 @@ function TitleAndChildren({ children, title }) {
   );
 }
 
+
+
 export class MonoSynth extends Component {
   constructor(props) {
     super(props);
@@ -286,6 +288,35 @@ export class MonoSynth extends Component {
       });
   };
 
+  removeSynth = () => {
+    this.props.removeSynth(this.props.synthApi.id)
+
+    fetch('http://localhost:3000/session_instruments/')
+    .then(response => response.json())
+    .then(sessionInstrumentData => {
+      console.log('sessionInstrumentData: ', sessionInstrumentData);
+      let thisSI = sessionInstrumentData.data.filter(
+        
+            si => si.attributes.instrument_id === this.props.synthApi.id
+          );
+          thisSI.map(instrument => { 
+             fetch(`http://localhost:3000/session_instruments/${instrument.id}`, {
+        method: 'delete'
+    })
+    .then(res => {
+      fetch(`http://localhost:3000/instruments/${this.props.synthApi.id}`, {
+        method: 'delete'
+    })
+    .then(res => console.log('res: ', res))
+      
+      console.log('res: ', res)})
+          })
+    });
+      
+};
+
+
+
   consoleUI = e => {
     console.log("consoleUI", e);
   };
@@ -318,6 +349,19 @@ export class MonoSynth extends Component {
         >
           💾
         </span>
+
+
+        <span
+          role="img"
+          aria-label="Save Synth"
+          className="remove-synth"
+          onClick={this.removeSynth}
+        >
+          ⓧ
+        </span>
+
+
+
         <div
           className="synth"
           tabIndex={1}

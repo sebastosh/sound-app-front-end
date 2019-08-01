@@ -80,16 +80,26 @@ class Session extends React.Component {
     this.setState({openChatBox:!this.state.openChatBox})
   }
 
+  removeSynth = synthId => {
+    console.log('remove synth: ', synthId);
+    const newInstrumentsArray = this.state.sessionInstruments.filter(      
+      instrument => instrument.id !== synthId)
+      console.log('newInstrumentsArray: ', newInstrumentsArray);
+      this.setState({
+        sessionInstruments: newInstrumentsArray
+      })
+  }
+
 
   render() {
     let sessionInstruments = this.state.sessionInstruments.map(instrument => {
       switch (instrument.instrument_type) {
         case "MonoSynth":
-          return <MonoSynth key={instrument.id} synthApi={instrument} />;
+          return <MonoSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
         case "DuoSynth":
-          return <DuoSynth key={instrument.id} synthApi={instrument} />;
+          return <DuoSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
         case "DrumSynth":
-          return <DrumSynth key={instrument.id} synthApi={instrument} />;
+          return <DrumSynth key={instrument.id} synthApi={instrument} removeSynth={this.removeSynth} />;
         default:
           return null;
       }
