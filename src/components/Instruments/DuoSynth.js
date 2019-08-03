@@ -397,7 +397,7 @@ export class DuoSynth extends Component {
         </span>
 
         <div
-          className="synth"
+          className="duo-synth"
           tabIndex={1}
           ref="divFocus"
           onKeyPress={this.onKeyPressed}
