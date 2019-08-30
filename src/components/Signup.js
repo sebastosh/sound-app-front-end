@@ -39,8 +39,9 @@ class Signup extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <h1>Sign Up</h1>
+      <div className="login-signup">
+              <form onSubmit={this.handleSubmit}>
+        <h2>Sign Up</h2>
         <input
           type="text"
           value={this.state.name}
@@ -58,6 +59,7 @@ class Signup extends React.Component {
         />
         <input type="submit" value="Sign Up!" />
       </form>
+      </div>
     );
   }
 }

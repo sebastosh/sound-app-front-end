@@ -52,7 +52,7 @@ class Profile extends React.Component {
     }
 
     return (
-      <div>
+      <div className="profile">
         {!!this.state.currentUser.attributes ? (
           <h1>{this.state.currentUser.attributes.username}'s Sessions</h1>
         ) : (

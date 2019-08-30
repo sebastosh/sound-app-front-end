@@ -2,16 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { ActionCableProvider } from 'react-actioncable-provider'
+
 import * as serviceWorker from './serviceWorker';
 
-const API_WS_ROOT = `ws://localhost:3000/cable`
+
 
 
 ReactDOM.render( 
-    <ActionCableProvider url={API_WS_ROOT}>
-    <App/>
-    </ActionCableProvider>, 
+    
+    <App/>, 
     document.getElementById('root')
 );
 

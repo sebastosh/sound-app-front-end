@@ -1,13 +1,10 @@
 import React from "react";
-// import { BrowserRouter as Router, Route } from "react-router-dom";
-// import Popup from 'reactjs-popup'
-import KeyBoard from "../components/Instruments/Piano/KeyBoard";
 import DuoSynth from "../components/Instruments/DuoSynth";
 import MonoSynth from "../components/Instruments/MonoSynth";
 import FMSynth from "../components/Instruments/FMSynth";
 import NewInstrumentForm from "../components/NewInstrumentForm";
 import EditSessionForm from "../components/EditSessionForm";
-import Chats from "./Chats";
+
 
 const API = "http://localhost:3000";
 
@@ -15,10 +12,8 @@ class Session extends React.Component {
   state = {
     sessionName: "",
     sessionInstruments: [],
-    help: false,
     addNew: false,
     editSessionName: false,
-    openChatBox: false
   };
 
   componentDidMount() {
@@ -33,10 +28,6 @@ class Session extends React.Component {
         });
       });
   }
-
-  showHelp = e => {
-    this.setState({ help: !this.state.help });
-  };
 
   newInstrumentForm = () => {
     this.setState({
@@ -76,9 +67,6 @@ class Session extends React.Component {
       });
   };
 
-  openChatBox = () => {
-    this.setState({ openChatBox: !this.state.openChatBox });
-  };
 
   removeSynth = synthId => {
     console.log("remove synth: ", synthId);
@@ -130,14 +118,10 @@ class Session extends React.Component {
           <div>
             <h1 onClick={this.editSessionName}>{this.state.sessionName}</h1>
             <div className="add-synth" onClick={this.newInstrumentForm}>
-              +
+            + Add Synth
             </div>
-            <span className="chat-button" onClick={this.openChatBox} role="img" aria-label="chat">
-              💬
-            </span>
-            {this.state.help ? <div classname="key-ui"><img onClick={this.showHelp} src="/Piano.png" /></div> : <span onClick={this.showHelp} className="help-button" role="img" aria-label="chat">
-              ﹖
-            </span>}
+           
+
           </div>
         )}
 
@@ -149,20 +133,6 @@ class Session extends React.Component {
           />
         ) : null}
 
-        {this.state.openChatBox ? (
-          <div onBlur={this.openChatBox} id="chat-container">
-            <Chats
-              
-              sessionName={this.state.sessionName}
-              currentUser={this.props.currentUser}
-            />
-          </div>
-        ) : null}
-        {/* <KeyBoard
-            octave={this.state.octave}
-            onDownKey={this.onDownKey}
-            onUpKey={this.onUpKey}
-          /> */}
         {sessionInstruments}
       </div>
     );

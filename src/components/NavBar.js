@@ -10,6 +10,7 @@ import NewSessionForm from "./NewSessionForm";
 export class NavBar extends Component {
   state = {
     newClick: false,
+    help: false
   };
 
   resetState = () => {
@@ -19,16 +20,21 @@ export class NavBar extends Component {
     this.setState({ newClick: !this.state.newClick });
   };
 
+  showHelp = e => {
+    this.setState({ help: !this.state.help });
+  };
+
   render() {
     return (
       <div className="navbar">
+       
         <NavLink to="/">
-          <span role="img" aria-label="control knobs">
-            🎛
+          <span role="img" aria-label="sessions">
+          Synth Sessions 🎛
           </span>
         </NavLink>
         {localStorage.token && !this.state.newClick ? (
-          <span className="newButton" onClick={this.newSessionClick}>
+          <span className="newButton" onClick={this.newSessionClick} role="img" aria-label="new session">
             🎹
           </span>
         ) : null}
@@ -44,8 +50,21 @@ export class NavBar extends Component {
 
         {localStorage.token ? (
           <div className="navuser">
+                       {this.state.help ? (
+              <div className="key-ui">
+                <img onClick={this.showHelp} src="/Piano.png" alt="piano keyboard mapping" />
+              </div>
+            ) : null}
+            <span
+              onClick={this.showHelp}
+              className="help-button"
+              role="img"
+              aria-label="chat"
+            >
+              ？
+            </span>
             <div className="nav-rotate">
-              {" "}
+           
               <NavLink onClick={this.resetState} to="/profile">
                 <span role="img" aria-label="profile">
                   ⏀

@@ -1,17 +1,9 @@
 import React, { Component } from "react";
 import Tone from "tone";
 import {
-  Toggle,
   Dial,
-  Number,
-  Position,
-  Slider,
-  Envelope,
   Multislider,
-  Piano,
-  RadioButton,
   Select,
-  Sequencer
 } from "react-nexusui";
 import ReactDOM from "react-dom";
 import KeyBoard from "./Piano/KeyBoard";

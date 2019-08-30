@@ -1,16 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-// import { motion } from "framer-motion"
 import SessionsContainer from "./containers/SessionsContainer";
 import Session from "./containers/Session";
-// import SessionChat from "./components/SessionChat";
 import NewSessionForm from "./components/NewSessionForm";
 import NavBar from "./components/NavBar";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
-import Chats from "./containers/Chats";
+
 import "./App.scss";
 
 export default class App extends React.Component {
@@ -137,13 +135,6 @@ export default class App extends React.Component {
                   currentUserSessions={this.state.currentUserSessions}
                   currentUser={this.state.currentUser}
                 />
-              )}
-            />
-
-            <Route
-              path="/chats"
-              render={routerProps => (
-                <Chats {...routerProps} currentUser={this.state.currentUser} />
               )}
             />
 
