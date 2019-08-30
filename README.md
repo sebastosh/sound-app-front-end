@@ -1,68 +1,40 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+[View Demo](https://modest-saha-2b5751.netlify.com/)
 
-In the project directory, you can run:
+[View Rails API Repo](https://github.com/sebastosh/synthsession-back)
 
-### `npm start`
+## Synth Sessions
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A web app designed for multi-synthesizer jamming. Users can create a session and choose to add one or more synthesizer modules (current choices, a Mono Synth, Duo Synth, and FM synth) to their sessions. They can play each synth with the on-screen keys or with a computer keyboard. 
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Key Technologies, Packages, and Gems
 
-### `npm test`
+* Front End
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  * React.js
+  * Tone.js
+  * nexusUI
+  * react-select
 
-### `npm run build`
+* Back End
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  * Rails 5 API
+  * JWT token authentication
+  * BCrypt
+  * Postgres database
+  * fast_jsonapi serializer
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Core Features
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Unregistered users can jam solo with synths but will be prompted to signup when saving a session or synth parameters.
+* A session show page displays a menu to add 1 to 3 different synthesizer modules at any time. 
+* Session and modules names can be edited inline. 
+* Module parameters (Gain, Envelopes, Harmonics, etc..) can be each be saved to backend server and restored in future sessions.
 
-### `npm run eject`
+## Demo
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[View Demo](https://modest-saha-2b5751.netlify.com/)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+ 
