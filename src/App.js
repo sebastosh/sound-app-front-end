@@ -8,7 +8,6 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Signout from "./components/Signout";
 import Profile from "./containers/Profile";
-
 import "./App.scss";
 
 export default class App extends React.Component {
@@ -21,7 +20,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     if (localStorage.token) {
-      fetch("http://localhost:3000/profile", {
+      fetch("https://still-mountain-88882.herokuapp.com/profile", {
         headers: { Authorization: localStorage.token }
       })
         .then(res => res.json())
@@ -32,7 +31,7 @@ export default class App extends React.Component {
       console.log("nobody here");
     }
 
-    fetch("http://localhost:3000/sessions")
+    fetch("https://still-mountain-88882.herokuapp.com/sessions")
       .then(response => response.json())
       .then(sessionsData => {
         this.setState({ sessions: sessionsData.data });
@@ -40,7 +39,7 @@ export default class App extends React.Component {
   }
 
   getUser = userData => {
-    fetch("http://localhost:3000/users")
+    fetch("https://still-mountain-88882.herokuapp.com/users")
       .then(response => response.json())
       .then(usersData => {
         this.setState({ users: usersData.data }, () => {

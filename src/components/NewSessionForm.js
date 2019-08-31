@@ -13,7 +13,7 @@ export class NewSessionForm extends Component {
     };
     console.log("newSession: ", newSession);
 
-    fetch("http://localhost:3000/sessions", {
+    fetch("https://still-mountain-88882.herokuapp.com/sessions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -33,7 +33,7 @@ export class NewSessionForm extends Component {
           user_id: this.props.sessionUser.id
         };
         console.log("newUserSession: ", newUserSession);
-        fetch("http://localhost:3000/user_sessions", {
+        fetch("https://still-mountain-88882.herokuapp.com/user_sessions", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

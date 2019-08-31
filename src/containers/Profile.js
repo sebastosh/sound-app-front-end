@@ -10,7 +10,7 @@ class Profile extends React.Component {
 
   componentDidMount() {
     if (localStorage.token) {
-      fetch("http://localhost:3000/profile", {
+      fetch("https://still-mountain-88882.herokuapp.com/profile", {
         headers: { Authorization: localStorage.token }
       })
         .then(res => res.json())
@@ -23,7 +23,7 @@ class Profile extends React.Component {
   }
 
   getUser = userData => {
-    fetch("http://localhost:3000/users")
+    fetch("https://still-mountain-88882.herokuapp.com/users")
       .then(response => response.json())
       .then(usersData => {
         this.setState({ users: usersData.data }, () => {

@@ -20,6 +20,7 @@ export class NavBar extends Component {
   };
 
   render() {
+    
     return (
       <div className="navbar">
         <NavLink to="/">

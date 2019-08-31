@@ -309,7 +309,7 @@ export class DuoSynth extends Component {
       settings: this.state.settings
     };
 
-    fetch(`http://localhost:3000/instruments/${this.props.synthApi.id}`, {
+    fetch(`https://still-mountain-88882.herokuapp.com/instruments/${this.props.synthApi.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -328,7 +328,7 @@ export class DuoSynth extends Component {
   removeSynth = () => {
     this.props.removeSynth(this.props.synthApi.id)
 
-    fetch('http://localhost:3000/session_instruments/')
+    fetch('https://still-mountain-88882.herokuapp.com/session_instruments/')
     .then(response => response.json())
     .then(sessionInstrumentData => {
       console.log('sessionInstrumentData: ', sessionInstrumentData);
@@ -337,11 +337,11 @@ export class DuoSynth extends Component {
             si => si.attributes.instrument_id === this.props.synthApi.id
           );
           thisSI.map(instrument => { 
-             fetch(`http://localhost:3000/session_instruments/${instrument.id}`, {
+             fetch(`https://still-mountain-88882.herokuapp.com/session_instruments/${instrument.id}`, {
         method: 'delete'
     })
     .then(res => {
-      fetch(`http://localhost:3000/instruments/${this.props.synthApi.id}`, {
+      fetch(`https://still-mountain-88882.herokuapp.com/instruments/${this.props.synthApi.id}`, {
         method: 'delete'
     })
     .then(res => console.log('res: ', res))

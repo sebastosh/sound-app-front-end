@@ -6,7 +6,7 @@ import NewInstrumentForm from "../components/NewInstrumentForm";
 import EditSessionForm from "../components/EditSessionForm";
 
 
-const API = "http://localhost:3000";
+const API = "https://still-mountain-88882.herokuapp.com";
 
 class Session extends React.Component {
   state = {

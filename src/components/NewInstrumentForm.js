@@ -21,7 +21,7 @@ export class NewInstrumentForm extends Component {
   }
 
   componentDidMount() {
-    fetch("http://localhost:3000/instruments")
+    fetch("https://still-mountain-88882.herokuapp.com/instruments")
       .then(response => response.json())
       .then(instrumentData => {
         this.setState({ instruments: instrumentData.data });
@@ -37,7 +37,7 @@ export class NewInstrumentForm extends Component {
         instrument_type: instrument.value
       };
       console.log("newInstrument: ", newInstrument);
-      fetch("http://localhost:3000/instruments", {
+      fetch("https://still-mountain-88882.herokuapp.com/instruments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export class NewInstrumentForm extends Component {
           };
           console.log("newSessionInstrument: ", newSessionInstrument);
 
-          fetch("http://localhost:3000/session_instruments", {
+          fetch("https://still-mountain-88882.herokuapp.com/session_instruments", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

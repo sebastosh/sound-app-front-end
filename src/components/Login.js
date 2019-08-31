@@ -8,7 +8,7 @@ class Login extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    fetch("http://localhost:3000/login", {
+    fetch("https://still-mountain-88882.herokuapp.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,7 +21,7 @@ class Login extends React.Component {
         if (parsedResponse.token) {
           localStorage.setItem("token", parsedResponse.token);
 
-          fetch("http://localhost:3000/profile", {
+          fetch("https://still-mountain-88882.herokuapp.com/profile", {
             headers: { Authorization: localStorage.token }
           })
             .then(res => res.json())
