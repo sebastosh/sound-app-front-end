@@ -1,11 +1,6 @@
 import React, { Component } from "react";
-import {
-  BrowserRouter as Router,
-  NavLink,
-  withRouter
-} from "react-router-dom";
+import { BrowserRouter as Router, NavLink, withRouter } from "react-router-dom";
 import NewSessionForm from "./NewSessionForm";
-
 
 export class NavBar extends Component {
   state = {
@@ -27,14 +22,18 @@ export class NavBar extends Component {
   render() {
     return (
       <div className="navbar">
-       
         <NavLink to="/">
           <span role="img" aria-label="sessions">
-          Synth Sessions 🎛
+            Synth Sessions 🎛
           </span>
         </NavLink>
         {localStorage.token && !this.state.newClick ? (
-          <span className="newButton" onClick={this.newSessionClick} role="img" aria-label="new session">
+          <span
+            className="newButton"
+            onClick={this.newSessionClick}
+            role="img"
+            aria-label="new session"
+          >
             🎹
           </span>
         ) : null}
@@ -50,9 +49,14 @@ export class NavBar extends Component {
 
         {localStorage.token ? (
           <div className="navuser">
-                       {this.state.help ? (
+            {this.state.help ? (
               <div className="key-ui">
-                <img onClick={this.showHelp} src="/Piano.png" alt="piano keyboard mapping" />
+                <h3>Keyboard Note Map:</h3>
+                <img
+                  onClick={this.showHelp}
+                  src="/Piano.png"
+                  alt="piano keyboard mapping"
+                />
               </div>
             ) : null}
             <span
@@ -63,35 +67,31 @@ export class NavBar extends Component {
             >
               ？
             </span>
-            <div className="nav-rotate">
-           
+            <div className="nav-item">
               <NavLink onClick={this.resetState} to="/profile">
                 <span role="img" aria-label="profile">
-                  ⏀
+                  👤
                 </span>
               </NavLink>
             </div>
-            <div className="nav-rotate">
+            <div className="nav-item">
               <NavLink onClick={this.resetState} to="/signout">
-                <span role="img" aria-label="Sign In">
-                ⏅
-                </span>
+                  Sign Out
               </NavLink>
             </div>
           </div>
         ) : (
           <div className="navuser">
-            <NavLink onClick={this.resetState} to="/login">
-              <span role="img" aria-label="Login">
-                ⏀
-              </span>
-            </NavLink>
-            <div className="nav-rotate">
-            <NavLink onClick={this.resetState} to="/signup">
-              <span role="img" aria-label="Sign Up">
-              ⏄
-              </span>
-            </NavLink>
+            <div className="nav-item">
+             
+              <NavLink onClick={this.resetState} to="/login">
+                Log In
+              </NavLink>
+            </div>
+            <div className="nav-item">
+              <NavLink onClick={this.resetState} to="/signup">
+                Sign Up
+              </NavLink>
             </div>
           </div>
         )}
