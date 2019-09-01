@@ -1,5 +1,5 @@
 
-[View Demo](https://modest-saha-2b5751.netlify.com/) 
+[View Demo](https://gifted-curran-46fd6d.netlify.com) 
 
 [View Rails API Repo](https://github.com/sebastosh/synthsession-back)
 
