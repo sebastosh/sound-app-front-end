@@ -1,7 +1,9 @@
 
-[View Demo](https://modest-saha-2b5751.netlify.com/)
+[View Demo](https://modest-saha-2b5751.netlify.com/) 
 
 [View Rails API Repo](https://github.com/sebastosh/synthsession-back)
+
+
 
 ## Synth Sessions
 
